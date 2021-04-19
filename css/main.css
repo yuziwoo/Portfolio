@@ -1,0 +1,28 @@
+/* 화면 설정, 화면 비율 고정 */
+html{
+  width:100%;
+  height:100%;
+}
+body{
+  width:100%;
+  height:100%;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+}
+.darkmode{background:rgba(37,37,48,1);}
+.lightmode{background:rgba(255,255,255,1);}
+
+/* scrollbar 제거*/
+body::-webkit-scrollbar{display:none;}
+body{-ms-overflow-style:none;}
+
+/* canvas */
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  cursor:pointer;
+}
