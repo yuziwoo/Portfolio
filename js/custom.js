@@ -29,4 +29,21 @@ window.addEventListener("load", (e) => {
     document.body.classList.add("pc")
   }
 
+  // darkmode 구별
+  let darkmode = false;
+
+  if (localStorage.getItem("darkmode")) {
+    darkmode = true;
+  } else if (localStorage.getItem("darkmode") == false) {
+    darkmode = false;
+  }
+
+  if (darkmode = true) {
+    if (document.body.classList.contains("lightmode")) {document.body.classList.remove("lightmode")}
+    document.body.classList.add("darkmode")
+  } else {
+    if (document.body.classList.contains("darkmode")) {document.body.classList.remove("darkmode")}
+    document.body.classList.add("lightmode")
+  }
+
 })
