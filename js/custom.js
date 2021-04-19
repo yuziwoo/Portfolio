@@ -21,4 +21,12 @@ window.addEventListener("load", (e) => {
     device = 0;
   }
 
+  if (device == 0) {
+    if (document.body.classList.contains("pc")) {document.body.classList.remove("pc")}
+    document.body.classList.add("mobile")
+  } else {
+    if (document.body.classList.contains("mobile")) {document.body.classList.remove("mobile")}
+    document.body.classList.add("pc")
+  }
+
 })
