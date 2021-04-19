@@ -6,7 +6,6 @@ window.addEventListener("load", (e) => {
 
   // device 모바일(=0), PC(=1) 구별
   let device = 0;
-  let userSelectDevice = 0;
   if (Modernizr.touchevents) {
     device = 0;  // supported
   } else {
@@ -16,9 +15,9 @@ window.addEventListener("load", (e) => {
   if(window.devicePixelRatio == 1) device = 1;
 
   // 사용자가 직접 Device Mode를 Select한 경우
-  if (userSelectDevice == "pc") {
+  if (localStorage.getItem("userSelectDevice") == "pc") {
     device = 1;
-  } else if (userSelectDevice == "mobile") {
+  } else if (localStorage.getItem("userSelectDevice") == "mobile") {
     device = 0;
   }
 
