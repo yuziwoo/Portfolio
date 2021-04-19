@@ -32,13 +32,13 @@ window.addEventListener("load", (e) => {
   // darkmode 구별
   let darkmode = false;
 
-  if (localStorage.getItem("darkmode")) {
+  if (localStorage.getItem("darkmode") == true) {
     darkmode = true;
   } else if (localStorage.getItem("darkmode") == false) {
     darkmode = false;
   }
 
-  if (darkmode = true) {
+  if (darkmode == true) {
     if (document.body.classList.contains("lightmode")) {document.body.classList.remove("lightmode")}
     document.body.classList.add("darkmode")
   } else {
