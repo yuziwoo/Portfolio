@@ -10,7 +10,7 @@ body{
   padding:0;
   overflow:hidden;
 }
-.darkmode{background:rgba(37,37,48,1);}
+.darkmode{background:rgba(8,8,15,1);}
 .lightmode{background:rgba(255,255,255,1);}
 
 /* scrollbar 제거*/

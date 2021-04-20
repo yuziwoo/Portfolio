@@ -6,6 +6,8 @@ class App {
 
     this.opening = new Opening();
 
+    this.count = 0;
+
     window.addEventListener("resize" , this.resize.bind(this), false);
     this.resize();
 
@@ -21,17 +23,19 @@ class App {
     this.ctx.scale(4,4);
 
     this.ctx.clearRect(0,0, this.stageWidth, this.stageHeight);
+    this.ctx.fillStyle = "rgba(8,8,15,1)"
+    this.ctx.fillRect(0,0,this.stageWidth,this.stageHeight)
 
-    this.ctx.beginPath();
-    this.ctx.fillStyle = "white";
-    this.ctx.fillRect(0,0, this.stageWidth, this.stageHeight);
+
     this.opening.resize(this.ctx)
   } // resize() End
 
   animate(t) {
     if(document.getElementsByTagName("canvas")[0]){
+      this.ctx.fillStyle = "rgba(8,8,15,0.1)"
+      this.ctx.fillRect(0,0,this.stageWidth,this.stageHeight)
 
-      this.opening.draw(this.ctx)
+    this.opening.draw(this.ctx)
 
       requestAnimationFrame(this.animate.bind(this));
     }
@@ -59,6 +63,8 @@ class Opening {
     this.count = 0;
     this.opacity = 100;
     this.fontColor = 0;
+    this.textDecoration = 0;
+    this.textDecorationV = 15;
 
     // 마우스 클릭으로 이벤트 실행
     this.isClick = 0;
@@ -73,24 +79,15 @@ class Opening {
     this.stageHeight = document.body.clientHeight;
     this.halfW = document.body.clientWidth/2
     this.halfH = document.body.clientHeight/2
+    this.gold1 = this.stageHeight/8*5
+    this.gold2 = this.stageHeight/8*5/8*5
+    this.gold3 = this.stageHeight/8*5/8*5/8*5
+    this.frameGap = (Math.min(this.stageWidth, this.stageHeight) / 20 - 1)/2
 
     if(this.isClick < 1){ // 클릭한 후 로는 도형의 크기를 고정시켜 오류 발생 방지
       this.radius = Math.min(this.stageWidth, this.stageHeight) / 20 * 9
       this.arc = this.radius / 2
     }
-
-    // line 1
-    ctx.save();
-    ctx.filter = `opacity(${this.opacity}%)`
-    ctx.beginPath();
-    ctx.fillStyle = "rgba(199,54,72,0.7)"//"rgba(225,75,67,1)"
-    ctx.moveTo(0,this.stageHeight/13*8);
-    ctx.lineTo(0,this.stageHeight);
-    ctx.lineTo(this.stageWidth,this.stageHeight);
-    ctx.lineTo(this.stageWidth,this.stageHeight/13*5);
-    ctx.closePath();
-    ctx.fill();
-    ctx.restore();
 
     this.eraser.resize();
   } // resize() End
@@ -111,9 +108,9 @@ class Opening {
     ctx.beginPath();
     ctx.save();
     ctx.filter = `opacity(${this.opacity}%)`
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 2.2;
     ctx.lineCap = "round"
-    ctx.strokeStyle = "white"
+    ctx.strokeStyle = "rgba(8,8,15,1)"
 
     // 도형 생성
     ctx.moveTo(this.halfW + this.radius,this.halfH);
@@ -133,14 +130,14 @@ class Opening {
     ctx.beginPath();
     ctx.save();
     ctx.filter = `opacity(${this.opacity}%)`
-    ctx.fillStyle = "white"
-    ctx.lineWidth = 1;
+    ctx.fillStyle = "rgba(8,8,15,1)"
+    ctx.lineWidth = 2;
     ctx.lineCap = "round"
-    ctx.strokeStyle = "black"
+    ctx.strokeStyle = "rgba(255,255,255,1)"
 
 
     // dashOffset
-    ctx.setLineDash([this.radius*4, this.radius]);
+    ctx.setLineDash([this.radius*3, this.radius]);
     ctx.lineDashOffset = this.dashOffset;
 
     // 도형 생성
@@ -159,18 +156,47 @@ class Opening {
     ctx.restore();
 
     // 텍스트 생성
-    if(this.count > 375 && this.isClick > 0){
-      if(this.fontColor < 1){this.fontColor += 0.02}
+    if(this.count < 300){
       ctx.beginPath();
-      ctx.fillStyle = `rgba(0,0,0,${this.fontColor + this.opacity/100 - 1})`
+      ctx.fillStyle = "rgba(255,255,255,0.8)"
+      ctx.font = "bold 36px Arial"
+      ctx.textAlign = "center"
+      ctx.fillText("Click for Enter", this.halfW, this.halfH);
+
+      if(this.isClick > 0){
+        if(this.textDecoration < 250){
+          this.textDecoration += this.textDecorationV;
+          if(this.textDecorationV > 1){
+            this.textDecorationV -= 0.55;
+          }
+          }
+        ctx.beginPath();
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 3;
+        ctx.lineCap = "round";
+        ctx.moveTo(this.halfW - 125,this.halfH - 8);
+        ctx.lineTo(this.halfW - 125 + this.textDecoration , this.halfH - 8);
+        ctx.stroke();
+      }
+    }
+
+
+    // 텍스트 생성 2
+    if(this.count > 375 && this.isClick > 0){
+      if(this.fontColor < 1){
+        this.fontColor += 0.02
+      }
+      ctx.beginPath();
+      ctx.fillStyle = `rgba( 255,255,255,${this.fontColor + this.opacity/100 - 1})`
       ctx.font = "bold 36px Arial"
       ctx.textAlign = "center"
       ctx.fillText("태어나면서부터", this.halfW, this.halfH - 26);
       ctx.fillText("현명한 이는 없다.", this.halfW, this.halfH + 26);
-      ctx.fillStyle = `rgba(0,0,0,${this.fontColor/2 + this.opacity/200 - 0.5})`
+      ctx.fillStyle = `rgba( 255,255,255,${this.fontColor/2 + this.opacity/200 - 0.5})`
       ctx.font = "bold 18px Arial"
       ctx.textAlign = "center"
       ctx.fillText("- Miguel de Cervantes", this.halfW, this.halfH + 60);
+
     }
 
      // 텍스트까지 생성되는 이벤트가 끝나면 지우게 이벤트 실행
@@ -194,7 +220,7 @@ class Eraser {
     this.color = "rgba(0,0,0,1)"
 
     // 지우개 움직임 설정
-    this.speed = this.r / 8;
+    this.speed = this.r / 5;
     this.move1 = 0;
     this.move2 = 0;
     this.move3 = 0;
@@ -213,7 +239,7 @@ class Eraser {
       this.stageHeight = document.body.clientHeight;
       this.r = Math.max(this.stageWidth , this.stageHeight) / 5;
       this.r2 = this.r / 2
-      this.speed = this.r / 8;
+      this.speed = this.r / 5;
       this.xy = [[0,0] , [0,0] ,[0,-this.r2] ,[-this.r2,0] ,[0,-this.r2] ,[-this.r2,0] ,[0,-this.r2] ,[-this.r2,0] ,[0,-this.r2] ,[-this.r2,0] ];
     }
   } // resize() End
