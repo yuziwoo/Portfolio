@@ -20,16 +20,16 @@ class App {
     this.canvas.height = this.stageHeight * 4;
     this.ctx.scale(4,4);
 
-    this.opening.resize(this.stageWidth,this.stageHeight)
+    this.ctx.clearRect(0,0, this.stageWidth, this.stageHeight);
+
+    this.ctx.beginPath();
+    this.ctx.fillStyle = "white";
+    this.ctx.fillRect(0,0, this.stageWidth, this.stageHeight);
+    this.opening.resize(this.ctx)
   } // resize() End
 
   animate(t) {
     if(document.getElementsByTagName("canvas")[0]){
-      this.ctx.clearRect(0,0, this.stageWidth, this.stageHeight);
-
-      this.ctx.beginPath();
-      this.ctx.fillStyle = "white";
-      this.ctx.fillRect(0,0, this.stageWidth, this.stageHeight);
 
       this.opening.draw(this.ctx)
 
@@ -42,6 +42,8 @@ class Opening {
   constructor(){
     this.stageWidth = document.body.clientWidth;
     this.stageHeight = document.body.clientHeight;
+    this.halfW = document.body.clientWidth/2
+    this.halfH = document.body.clientHeight/2
     this.eraser = new Eraser();
 
     // 내부 도형 설정
@@ -63,16 +65,32 @@ class Opening {
     document.addEventListener("click", (e)=>{
       this.isClick += 1;
     })
+
   } // constructor() End
 
-  resize(stageWidth, stageHeight){
-    this.stageWidth = stageWidth;
-    this.stageHeight = stageHeight;
+  resize(ctx){
+    this.stageWidth = document.body.clientWidth;
+    this.stageHeight = document.body.clientHeight;
+    this.halfW = document.body.clientWidth/2
+    this.halfH = document.body.clientHeight/2
 
     if(this.isClick < 1){ // 클릭한 후 로는 도형의 크기를 고정시켜 오류 발생 방지
       this.radius = Math.min(this.stageWidth, this.stageHeight) / 20 * 9
       this.arc = this.radius / 2
     }
+
+    // line 1
+    ctx.save();
+    ctx.filter = `opacity(${this.opacity}%)`
+    ctx.beginPath();
+    ctx.fillStyle = "rgba(199,54,72,0.7)"//"rgba(225,75,67,1)"
+    ctx.moveTo(0,this.stageHeight/13*8);
+    ctx.lineTo(0,this.stageHeight);
+    ctx.lineTo(this.stageWidth,this.stageHeight);
+    ctx.lineTo(this.stageWidth,this.stageHeight/13*5);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
 
     this.eraser.resize();
   } // resize() End
@@ -88,31 +106,56 @@ class Opening {
       }
       this.dashOffset -= 1; // 도형 변환이 종료된 후에는 늘렸던 dashOffset 감소
     }
+
+    // 원 그리기
+    ctx.beginPath();
+    ctx.save();
+    ctx.filter = `opacity(${this.opacity}%)`
+    ctx.lineWidth = 3;
+    ctx.lineCap = "round"
+    ctx.strokeStyle = "white"
+
+    // 도형 생성
+    ctx.moveTo(this.halfW + this.radius,this.halfH);
+    ctx.arcTo(this.halfW + this.radius, this.halfH + this.radius, this.halfW + this.change, this.halfH + this.radius, this.radius - this.change);
+    ctx.lineTo(this.halfW , this.halfH + this.radius);
+    ctx.arcTo(this.halfW - this.radius, this.halfH + this.radius, this.halfW - this.radius, this.halfH + this.change, this.radius - this.change);
+    ctx.lineTo(this.halfW - this.radius, this.halfH);
+    ctx.arcTo(this.halfW - this.radius, this.halfH - this.radius, this.halfW - this.change, this.halfH - this.radius, this.radius - this.change);
+    ctx.lineTo(this.halfW, this.halfH - this.radius);
+    ctx.arcTo(this.halfW + this.radius, this.halfH - this.radius, this.halfW + this.radius, this.halfH - this.change, this.radius - this.change);
+    ctx.lineTo(this.halfW + this.radius, this.halfH);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
+
+    // 원 그리기 2
     ctx.beginPath();
     ctx.save();
     ctx.filter = `opacity(${this.opacity}%)`
     ctx.fillStyle = "white"
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 1;
     ctx.lineCap = "round"
     ctx.strokeStyle = "black"
+
 
     // dashOffset
     ctx.setLineDash([this.radius*4, this.radius]);
     ctx.lineDashOffset = this.dashOffset;
 
     // 도형 생성
-    ctx.moveTo(this.stageWidth/2 + this.radius,this.stageHeight/2);
-    ctx.arcTo(this.stageWidth/2 + this.radius, this.stageHeight/2 + this.radius, this.stageWidth/2 + this.change,this.stageHeight/2 + this.radius, this.radius - this.change);
-    ctx.lineTo(this.stageWidth/2,this.stageHeight/2 + this.radius);
-    ctx.arcTo(this.stageWidth/2 - this.radius, this.stageHeight/2 + this.radius, this.stageWidth/2 - this.radius, this.stageHeight/2 + this.change, this.radius - this.change);
-    ctx.lineTo(this.stageWidth/2 - this.radius, this.stageHeight/2);
-    ctx.arcTo(this.stageWidth/2 - this.radius, this.stageHeight/2 - this.radius, this.stageWidth/2 - this.change, this.stageHeight/2 - this.radius, this.radius - this.change);
-    ctx.lineTo(this.stageWidth/2, this.stageHeight/2 - this.radius);
-    ctx.arcTo(this.stageWidth/2 + this.radius, this.stageHeight/2 - this.radius, this.stageWidth/2 + this.radius, this.stageHeight/2 - this.change, this.radius - this.change);
-    ctx.lineTo(this.stageWidth/2 + this.radius, this.stageHeight/2);
+    ctx.moveTo(this.halfW + this.radius,this.halfH);
+    ctx.arcTo(this.halfW + this.radius, this.halfH + this.radius, this.halfW + this.change, this.halfH + this.radius, this.radius - this.change);
+    ctx.lineTo(this.halfW , this.halfH + this.radius);
+    ctx.arcTo(this.halfW - this.radius, this.halfH + this.radius, this.halfW - this.radius, this.halfH + this.change, this.radius - this.change);
+    ctx.lineTo(this.halfW - this.radius, this.halfH);
+    ctx.arcTo(this.halfW - this.radius, this.halfH - this.radius, this.halfW - this.change, this.halfH - this.radius, this.radius - this.change);
+    ctx.lineTo(this.halfW, this.halfH - this.radius);
+    ctx.arcTo(this.halfW + this.radius, this.halfH - this.radius, this.halfW + this.radius, this.halfH - this.change, this.radius - this.change);
+    ctx.lineTo(this.halfW + this.radius, this.halfH);
     ctx.closePath();
-    ctx.stroke();
     ctx.fill();
+    ctx.stroke();
     ctx.restore();
 
     // 텍스트 생성
@@ -122,12 +165,12 @@ class Opening {
       ctx.fillStyle = `rgba(0,0,0,${this.fontColor + this.opacity/100 - 1})`
       ctx.font = "bold 36px Arial"
       ctx.textAlign = "center"
-      ctx.fillText("태어나면서부터", this.stageWidth/2, this.stageHeight/2 - 26);
-      ctx.fillText("현명한 이는 없다.", this.stageWidth/2, this.stageHeight/2 + 26);
+      ctx.fillText("태어나면서부터", this.halfW, this.halfH - 26);
+      ctx.fillText("현명한 이는 없다.", this.halfW, this.halfH + 26);
       ctx.fillStyle = `rgba(0,0,0,${this.fontColor/2 + this.opacity/200 - 0.5})`
       ctx.font = "bold 18px Arial"
       ctx.textAlign = "center"
-      ctx.fillText("- Miguel de Cervantes", this.stageWidth/2, this.stageHeight/2 + 60);
+      ctx.fillText("- Miguel de Cervantes", this.halfW, this.halfH + 60);
     }
 
      // 텍스트까지 생성되는 이벤트가 끝나면 지우게 이벤트 실행
