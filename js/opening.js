@@ -72,6 +72,17 @@ class Opening {
       this.isClick += 1;
     })
 
+    // 마우스 hover로 text effect
+    this.isHover = 0.8;
+    document.addEventListener("mousemove", (e)=>{
+      if(e.clientX > this.halfW - 125 &&
+        e.clientX < this.halfW + 125 &&
+        e.clientY > this.halfH - 32 &&
+        e.clientY < this.halfH ){
+          this.isHover = 1;
+        }else { this.isHover = 0.8}
+    });
+
   } // constructor() End
 
   resize(ctx){
@@ -158,7 +169,7 @@ class Opening {
     // 텍스트 생성
     if(this.count < 300){
       ctx.beginPath();
-      ctx.fillStyle = "rgba(255,255,255,0.8)"
+      ctx.fillStyle = `rgba(255,255,255,${this.isHover})`
       ctx.font = "bold 36px Arial"
       ctx.textAlign = "center"
       ctx.fillText("Click for Enter", this.halfW, this.halfH);
@@ -212,35 +223,20 @@ class Eraser {
   constructor(){
     this.stageWidth = document.body.clientWidth;
     this.stageHeight = document.body.clientHeight;
+
+    this.line1X = 0;
+    this.line1Y = 0;
+    this.lineWidth = 0;
+    this.lineWidthV = 5;
+
     this.count = 0;
 
-    // 지우개 설정
-    this.r = Math.max(this.stageWidth , this.stageHeight) / 5;
-    this.r2 = this.r / 2
-    this.color = "rgba(0,0,0,1)"
-
-    // 지우개 움직임 설정
-    this.speed = this.r / 5;
-    this.move1 = 0;
-    this.move2 = 0;
-    this.move3 = 0;
-    this.move4 = 0;
-    this.move5 = 0;
-    this.move6 = 0;
-    this.move7 = 0;
-    this.move8 = 0;
-    this.move9 = 0;
-    this.xy = [[0,0] , [0,0] ,[0,-this.r2] ,[-this.r2,0] ,[0,-this.r2] ,[-this.r2,0] ,[0,-this.r2] ,[-this.r2,0] ,[0,-this.r2] ,[-this.r2,0] ];
   } // constructor() End
 
   resize(){
     if(this.move1 < 1){
       this.stageWidth = document.body.clientWidth;
       this.stageHeight = document.body.clientHeight;
-      this.r = Math.max(this.stageWidth , this.stageHeight) / 5;
-      this.r2 = this.r / 2
-      this.speed = this.r / 5;
-      this.xy = [[0,0] , [0,0] ,[0,-this.r2] ,[-this.r2,0] ,[0,-this.r2] ,[-this.r2,0] ,[0,-this.r2] ,[-this.r2,0] ,[0,-this.r2] ,[-this.r2,0] ];
     }
   } // resize() End
 
@@ -248,143 +244,23 @@ class Eraser {
     ctx.save();
     ctx.globalCompositeOperation = "destination-out";
     ctx.beginPath();
-    ctx.lineWidth = this.r;
+    this.lineWidthV += 1
+    this.lineWidth += this.lineWidthV
+    ctx.lineWidth = this.lineWidth;
     ctx.lineCap = "round"
-    ctx.strokeStyle = this.color;
-    ctx.moveTo(this.r2 , -this.r2);
+    ctx.strokeStyle = "egba(255,255,255,1)";
+    ctx.moveTo(this.stageWidth , 0);
+    this.line1X += this.stageWidth / 10;
+    this.line1Y += this.stageHeight / 10;
+    ctx.lineTo(this.stageWidth - this.line1X , this.line1Y);
+    ctx.stroke();
+    ctx.restore();
 
-      //scene1
-      ctx.lineTo(this.r2 - this.move1 , -this.r2 + this.move1);
-      if(this.move1 <= this.r){this.move1 += this.speed;}
-
-      //scene2
-      if(this.r2 - this.move1 < -this.r2){ // x값이 먼저 0보다 작아지면
-        this.move1 -= this.speed;
-        ctx.lineTo(-this.r2 , this.r2 + this.r)
-        ctx.lineTo(-this.r2 + this.move2 , this.r2 + this.r - this.move2)
-        this.xy[2] = [-this.r2 + this.move2 , this.r2 + this.r - this.move2]
-        this.move2 += this.speed;
-      }else if(-this.r2 + this.move1 > this.stageHeight + this.r2){ // y값이 먼저 stageHeight보다 커지면
-        this.move1 -= this.speed;
-        ctx.lineTo(this.r2 - this.move1 + this.r, this.stageHeight + this.r2)
-        ctx.lineTo(this.r2 - this.move1 + this.r + this.move2, this.stageHeight + this.r2 - this.move2)
-        this.xy[2] = [this.r2 - this.move1 + this.r + this.move2, this.stageHeight + this.r2 - this.move2]
-        this.move2 += this.speed;
-      }
-
-      //scene3
-        if(this.xy[2][0] > this.stageWidth + this.r2){ // x값이 먼저 stageWidth보다 커지면
-          this.move2 -= this.speed;
-          ctx.lineTo(this.xy[2][0] , this.xy[2][1] + this.r);
-          ctx.lineTo(this.xy[2][0] - this.move3 , this.xy[2][1] + this.r + this.move3);
-          this.xy[3] = [this.xy[2][0] - this.move3 , this.xy[2][1] + this.r + this.move3]
-          this.move3 += this.speed;
-        }else if(this.xy[2][1] < -this.r2){ // y값이 먼저 0보다 작아지면
-          this.move2 -= this.speed;
-          ctx.lineTo(this.xy[2][0] + this.r , this.xy[2][1]);
-          ctx.lineTo(this.xy[2][0] + this.r - this.move3 , this.xy[2][1] + this.move3);
-          this.xy[3] = [this.xy[2][0] + this.r - this.move3 , this.xy[2][1] + this.move3]
-          this.move3 += this.speed;
-        }
-
-      // scene4
-      if(this.xy[3][0] < -this.r2){ // x값이 먼저 0보다 작아지면
-        this.move3 -= this.speed;
-        ctx.lineTo(this.xy[3][0] , this.xy[3][1] + this.r);
-        ctx.lineTo(this.xy[3][0] + this.move4 , this.xy[3][1] + this.r - this.move4);
-        this.xy[4] = [this.xy[3][0] + this.move4 , this.xy[3][1] + this.r - this.move4];
-        this.move4 += this.speed;
-      }else if(this.xy[3][1] > this.stageHeight + this.r2){ // y값이 먼저 stageHeight 보다 커지면
-        this.move3 -= this.speed;
-        ctx.lineTo(this.xy[3][0] + this.r , this.xy[3][1]);
-        ctx.lineTo(this.xy[3][0] + this.r + this.move4 , this.xy[3][1] - this.move4);
-        this.xy[4] = [this.xy[3][0] + this.r + this.move4 , this.xy[3][1] - this.move4];
-        this.move4 += this.speed;
-      }
-
-      // scene5
-      if(this.xy[4][0] > this.stageWidth + this.r2){ // x값이 먼저 stageWidth 보다 커지면
-        this.move4 -= this.speed;
-        ctx.lineTo(this.xy[4][0] , this.xy[4][1] + this.r);
-        ctx.lineTo(this.xy[4][0] - this.move5 , this.xy[4][1] + this.r + this.move5);
-        this.xy[5] = [this.xy[4][0] - this.move5 , this.xy[4][1] + this.r + this.move5];
-        this.move5 += this.speed;
-      }else if(this.xy[4][1] < -this.r2){ // y값이 먼저 0보다 작아지면
-        this.move4 -= this.speed;
-        ctx.lineTo(this.xy[4][0] + this.r , this.xy[4][1]);
-        ctx.lineTo(this.xy[4][0] + this.r - this.move5 , this.xy[4][1] + this.move5);
-        this.xy[5] = [this.xy[4][0] + this.r - this.move5 , this.xy[4][1] + this.move5];
-        this.move5 += this.speed;
-      }
-
-      // scene6
-      if(this.xy[5][0] < -this.r2){ // x값이 먼저 0보다 작아지면
-        this.move5 -= this.speed;
-        ctx.lineTo(this.xy[5][0] , this.xy[5][1] + this.r);
-        ctx.lineTo(this.xy[5][0] + this.move6 , this.xy[5][1] + this.r - this.move6);
-        this.xy[6] = [this.xy[5][0] + this.move6 , this.xy[5][1] + this.r - this.move6];
-        this.move6 += this.speed;
-      }else if(this.xy[5][1] > this.stageHeight + this.r2){ // y값이 먼저 stageHeight 보다 커지면
-        this.move5 -= this.speed;
-        ctx.lineTo(this.xy[5][0] + this.r , this.xy[5][1]);
-        ctx.lineTo(this.xy[5][0] + this.r + this.move6 , this.xy[5][1] - this.move6);
-        this.xy[6] = [this.xy[5][0] + this.r + this.move6 , this.xy[5][1] - this.move6];
-        this.move6 += this.speed;
-      }
-
-      // scene7
-      if(this.xy[6][0] > this.stageWidth + this.r2){ // x값이 먼저 stageWidth 보다 커지면
-        this.move6 -= this.speed;
-        ctx.lineTo(this.xy[6][0] , this.xy[6][1] + this.r);
-        ctx.lineTo(this.xy[6][0] - this.move7 , this.xy[6][1] + this.r + this.move7);
-        this.xy[7] = [this.xy[6][0] - this.move7 , this.xy[6][1] + this.r + this.move7];
-        this.move7 += this.speed;
-      }else if(this.xy[6][1] < -this.r2){ // y값이 먼저 0보다 작아지면
-        this.move6 -= this.speed;
-        ctx.lineTo(this.xy[6][0] + this.r , this.xy[6][1]);
-        ctx.lineTo(this.xy[6][0] + this.r - this.move7 , this.xy[6][1] + this.move7);
-        this.xy[5] = [this.xy[6][0] + this.r - this.move7 , this.xy[6][1] + this.move7];
-        this.move7 += this.speed;
-      }
-
-      // scene8
-      if(this.xy[7][0] < -this.r2){ // x값이 먼저 0보다 작아지면
-        this.move7 -= this.speed;
-        ctx.lineTo(this.xy[7][0] , this.xy[7][1] + this.r);
-        ctx.lineTo(this.xy[7][0] + this.move8 , this.xy[7][1] + this.r - this.move8);
-        this.xy[8] = [this.xy[7][0] + this.move8 , this.xy[7][1] + this.r - this.move8];
-        this.move8 += this.speed;
-      }else if(this.xy[7][1] > this.stageHeight + this.r2){ // y값이 먼저 stageHeight 보다 커지면
-        this.move7 -= this.speed;
-        ctx.lineTo(this.xy[7][0] + this.r , this.xy[7][1]);
-        ctx.lineTo(this.xy[7][0] + this.r + this.move8 , this.xy[7][1] - this.move8);
-        this.xy[8] = [this.xy[7][0] + this.r + this.move8 , this.xy[7][1] - this.move8];
-        this.move8 += this.speed;
-      }
-
-      // scene9
-      if(this.xy[8][0] > this.stageWidth + this.r2){ // x값이 먼저 stageWidth 보다 커지면
-        this.move8 -= this.speed;
-        ctx.lineTo(this.xy[8][0] , this.xy[8][1] + this.r);
-        ctx.lineTo(this.xy[8][0] - this.move9 , this.xy[8][1] + this.r + this.move9);
-        this.xy[9] = [this.xy[8][0] - this.move9 , this.xy[8][1] + this.r + this.move9];
-        this.move9 += this.speed;
-      }else if(this.xy[8][1] < -this.r2){ // y값이 먼저 0보다 작아지면
-        this.move8 -= this.speed;
-        ctx.lineTo(this.xy[8][0] + this.r , this.xy[8][1]);
-        ctx.lineTo(this.xy[8][0] + this.r - this.move9 , this.xy[8][1] + this.move9);
-        this.xy[9] = [this.xy[8][0] + this.r - this.move9 , this.xy[8][1] + this.move9];
-        this.move9 += this.speed;
-      }
-      ctx.stroke();
-      ctx.restore();
-      if(this.move9 > 0){
-        this.count += 1;
-      }
-
-    if(this.count > 10){
+    this.count += 1;
+    if(this.count > 80){
       document.getElementsByTagName("canvas")[0].remove();
       document.normalize();
+      window.location.href = "main.html"
     }
   }
 }
