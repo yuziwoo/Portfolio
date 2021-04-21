@@ -8,25 +8,29 @@ window.addEventListener("load", (e) => {
   let device = 0;
   if (Modernizr.touchevents) {
     device = 0;  // supported
-  } else {
+  }else{
     device = 1;   // not-supported
   }
 
-  if(window.devicePixelRatio == 1) device = 1;
+  if (window.devicePixelRatio == 1) device = 1;
 
   // 사용자가 직접 Device Mode를 Select한 경우
   if (localStorage.getItem("userSelectDevice") == "pc") {
     device = 1;
-  } else if (localStorage.getItem("userSelectDevice") == "mobile") {
+  }else if (localStorage.getItem("userSelectDevice") == "mobile") {
     device = 0;
   }
 
   if (device == 0) {
-    if (document.body.classList.contains("pc")) {document.body.classList.remove("pc")}
-    document.body.classList.add("mobile")
+    if (document.body.classList.contains("pc")) {
+      document.body.classList.remove("pc");
+    }
+    document.body.classList.add("mobile");
   } else {
-    if (document.body.classList.contains("mobile")) {document.body.classList.remove("mobile")}
-    document.body.classList.add("pc")
+    if (document.body.classList.contains("mobile")) {
+      document.body.classList.remove("mobile");
+    }
+    document.body.classList.add("pc");
   }
 
   // darkmode 구별
@@ -39,11 +43,15 @@ window.addEventListener("load", (e) => {
   }
 
   if (darkmode == true) {
-    if (document.body.classList.contains("lightmode")) {document.body.classList.remove("lightmode")}
-    document.body.classList.add("darkmode")
+    if (document.body.classList.contains("lightmode")) {
+      document.body.classList.remove("lightmode");
+    }
+    document.body.classList.add("darkmode");
   } else {
-    if (document.body.classList.contains("darkmode")) {document.body.classList.remove("darkmode")}
-    document.body.classList.add("lightmode")
+    if (document.body.classList.contains("darkmode")) {
+      document.body.classList.remove("darkmode");
+    }
+    document.body.classList.add("lightmode");
   }
 
-})
+}) // window onload End --
