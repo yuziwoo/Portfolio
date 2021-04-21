@@ -103,6 +103,31 @@
   font-weight: 500;
 }
 
+@media all and (max-width: 1024px) {
+  .header {
+    display: block;
+  }
+  .logo {
+    position: absolute;
+    justify-content: center;
+    top: 0;
+    left: calc(50% - 82.5px);
+  }
+  .header .main_menu li {
+    display: none;
+  }
+  .menu_btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+@media all and (max-width: 400px) {
+  .logo {
+    display: none;
+  }
+}
+
 /* menu button */
 .menu_btn {
   width: 130px;
