@@ -21,7 +21,7 @@ window.addEventListener("load", (e) => {
     device = 0;
   }
 
-  if (device == 0) {
+  if (!device) {
     if (document.body.classList.contains("pc")) {
       document.body.classList.remove("pc");
     }

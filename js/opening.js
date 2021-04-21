@@ -261,7 +261,12 @@ class Eraser {
     if (this.count > 80) {
       document.getElementsByTagName("canvas")[0].remove();
       document.normalize();
-      window.location.href = "main.html";
+      if (document.body.classList.contains("pc")) {
+        window.location.href = "main.html";
+      }else if (document.body.classList.contains("mobile")) {
+        window.location.href = "m_main.html"
+      }
+
     }
   }
 }
