@@ -11,8 +11,8 @@ window.addEventListener("load", (e) => {
   }else{
     device = "pc";   // not-supported
   }
-
   if (window.devicePixelRatio == 1) device = "pc";
+
   // localStorage 생성 [방문횟수, darkmode = 0; lightmode = 1;, mobile = 0; pc = 1;]
   let localStorage_data = 0;
   if (Number(localStorage.getItem("portfolio1012")) < 1) {
@@ -22,12 +22,12 @@ window.addEventListener("load", (e) => {
     localStorage.setItem("portfolio1012", `${1}${localStorage_data[1]}${localStorage_data[2]}`);
   }
 
-  // 사용자가 직접 Device Mode를 Select한 경우
-    if (localStorage.getItem("portfolio1012")[2] == "1") {
-      device = "pc";
-    }else if (localStorage.getItem("portfolio1012")[2] == "0") {
-      device = "mobile";
-    }
+  // 사용자가 직접 Device Mode를 지정한 경우
+  if (localStorage.getItem("portfolio1012")[2] == "1") {
+    device = "pc";
+  }else if (localStorage.getItem("portfolio1012")[2] == "0") {
+    device = "mobile";
+  }
 
 
   if (device == "mobile") {

@@ -67,25 +67,25 @@ window.addEventListener("load", (e) => {
   let localStorage_value = "";
   let localStorage_value2 = "";
   if (document.body.classList.contains("darkmode")) {
-    darkmode_btn_image.src = "img/darkmode_btn.png"
+    darkmode_btn_image.src = "img/darkmode_btn.png";
   } else if (document.body.classList.contains("lightmode")) {
-    darkmode_btn_image.src = "img/lightmode_btn.png"
+    darkmode_btn_image.src = "img/lightmode_btn.png";
   }
 
   darkmode_btn.addEventListener("click", () => {
-      localStorage_value = localStorage.getItem("portfolio1012")[0]
+      localStorage_value = localStorage.getItem("portfolio1012")[0];
       localStorage_value2 = localStorage.getItem("portfolio1012")[2];
 
     // localStorage 변환
     if (document.body.classList.contains("darkmode")) {
       document.body.classList.add("lightmode");
       document.body.classList.remove("darkmode");
-      darkmode_btn_image.src = "img/lightmode_btn.png"
+      darkmode_btn_image.src = "img/lightmode_btn.png";
       localStorage.setItem("portfolio1012", `${localStorage_value}1${localStorage_value2}`);
     } else if (document.body.classList.contains("lightmode")) {
       document.body.classList.add("darkmode");
       document.body.classList.remove("lightmode");
-      darkmode_btn_image.src = "img/darkmode_btn.png"
+      darkmode_btn_image.src = "img/darkmode_btn.png";
       localStorage.setItem("portfolio1012", `${localStorage_value}0${localStorage_value2}`);
     }
 

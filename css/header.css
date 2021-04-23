@@ -168,16 +168,23 @@
   border: none;
   position: absolute;
   top: 25px;
-  right: 20px;
+  right: 30px;
   padding: 0;
   cursor: pointer;
   z-index: 2;
 }
+.menu_btn .darkmode_btn button img {
+  transition: transform 0.7s;
+}
+.menu_btn .darkmode_btn button :hover {
+  transform: rotate(30deg);
+}
 .darkmode .header .menu_btn .darkmode_btn button {
-  background: rgba(0, 0, 0, 0);
+  background: rgba(255, 237, 0, 0.1);
 }
 .lightmode .header .menu_btn .darkmode_btn button {
   background: rgba(0, 0, 0, 1);
+  box-shadow: 0 0 3px 3px rgba(0,0,0,1);
 }
 .lightmode .header .menu_btn .darkmode_btn button img {
   position: absolute;
