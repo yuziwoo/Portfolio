@@ -1,3 +1,5 @@
+  // header.js script 태그는 3번째에 첨부해주세요.
+
 window.addEventListener("load", (e) => {
   const header = document.createElement("header");
   header.classList.add("header")
@@ -17,15 +19,16 @@ window.addEventListener("load", (e) => {
     }
   } else {
     for (let i = 0; i < 8; i++) {
-      path[i].setAttribute("fill", "rgba(30, 50, 39, 1)");
+      path[i].setAttribute("fill", "#213429");
     }
   }
   logo.appendChild(logo_a);
   header.appendChild(logo);
 
-  // List
+  // Main Navigation
+  const nav = document.createElement("nav");
   const main_menu = document.createElement("ul");
-  main_menu.classList.add("main_menu");
+  nav.classList.add("main_menu");
 
   const main_menu_list_info = [["About me", "aboutMe.html"], ["Interactive works", "interactiveWork.html"], ["Pages", "page.html"], ["Design tools", "designTool.html"]];
   for (let i =0; i < 4; i++){
@@ -37,7 +40,8 @@ window.addEventListener("load", (e) => {
     main_menu_list.appendChild(main_menu_list_a);
     main_menu.appendChild(main_menu_list);
   }
-  header.appendChild(main_menu);
+  nav.appendChild(main_menu);
+  header.appendChild(nav);
 
 
   if (document.getElementsByClassName("main_menu_list")[0].classList.contains("active")){
@@ -52,8 +56,54 @@ window.addEventListener("load", (e) => {
     document.styleSheets[3].cssRules[0].style.setProperty("left", "-377.5px");
   }
 
-  // Menu button
+  // Menu button -darkmode_btn
   const menu_btn_wrap = document.createElement("div");
+  const darkmode = document.createElement("div");
+  darkmode.classList.add("darkmode_btn")
+  const darkmode_btn = document.createElement("button");
+  darkmode.appendChild(darkmode_btn);
+  menu_btn_wrap.appendChild(darkmode);
+  let darkmode_btn_image = document.createElement("img");
+  let localStorage_value = "";
+  let localStorage_value2 = "";
+  if (document.body.classList.contains("darkmode")) {
+    darkmode_btn_image.src = "img/darkmode_btn.png"
+  } else if (document.body.classList.contains("lightmode")) {
+    darkmode_btn_image.src = "img/lightmode_btn.png"
+  }
+
+  darkmode_btn.addEventListener("click", () => {
+      localStorage_value = localStorage.getItem("portfolio1012")[0]
+      localStorage_value2 = localStorage.getItem("portfolio1012")[2];
+
+    // localStorage 변환
+    if (document.body.classList.contains("darkmode")) {
+      document.body.classList.add("lightmode");
+      document.body.classList.remove("darkmode");
+      darkmode_btn_image.src = "img/lightmode_btn.png"
+      localStorage.setItem("portfolio1012", `${localStorage_value}1${localStorage_value2}`);
+    } else if (document.body.classList.contains("lightmode")) {
+      document.body.classList.add("darkmode");
+      document.body.classList.remove("lightmode");
+      darkmode_btn_image.src = "img/darkmode_btn.png"
+      localStorage.setItem("portfolio1012", `${localStorage_value}0${localStorage_value2}`);
+    }
+
+    // header logo 색깔 변환
+    if (document.body.classList.contains("darkmode")) {
+      for (let i = 0; i < 8; i++) {
+        path[i].setAttribute("fill", "white");
+      }
+    } else {
+      for (let i = 0; i < 8; i++) {
+        path[i].setAttribute("fill", "#213429");
+      }
+    }
+  }, false); // click 이벤트 종료
+
+  darkmode_btn.appendChild(darkmode_btn_image);
+
+  // Menu button -darkmode_btn
   const menu_btn = document.createElement("button");
   menu_btn_wrap.classList.add("menu_btn");
   for (let i = 0; i < 3; i++){
@@ -64,6 +114,11 @@ window.addEventListener("load", (e) => {
   }
   menu_btn_wrap.appendChild(menu_btn);
   header.appendChild(menu_btn_wrap);
+
+
+  // Side Navigation
+  const side_nav = document.createElement("nav");
+  side_nav.classList.add("side_nav");
 
 
 })

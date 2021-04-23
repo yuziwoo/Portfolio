@@ -34,6 +34,12 @@
 
 /* main navigation */
 .main_menu {
+  margin: 0;
+  padding: 0;
+  width: 600px;
+  height: 80px;
+}
+.main_menu ul {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -44,11 +50,11 @@
   justify-content: center;
   align-items: center;
 }
-.main_menu li {
+.main_menu ul li {
   text-align: center;
   position: relative;
 }
-.main_menu li:last-child::after {
+.main_menu ul li:last-child::after {
   content: "";
   position: absolute;
   width: 5px;
@@ -57,76 +63,52 @@
   top: -7px;
   transition: left 0.7s;
 }
-.darkmode .header .main_menu li:last-child::after {
+.darkmode .header .main_menu ul li:last-child::after {
   background-color: rgba(255, 255, 255, 0.8);
 }
-.lightmode .header .main_menu li:last-child::after {
+.lightmode .header .main_menu ul li:last-child::after {
   background-color: rgba(30, 50, 39, 0.8);
 }
-.main_menu li:nth-child(1):hover ~li:last-child::after {
+.main_menu ul li:nth-child(1):hover ~li:last-child::after {
   left: -377.5px;
 }
-.main_menu li:nth-child(2):hover ~li:last-child::after {
+.main_menu ul li:nth-child(2):hover ~li:last-child::after {
   left: -227.5px;
 }
-.main_menu li:nth-child(3):hover ~li:last-child::after {
+.main_menu ul li:nth-child(3):hover ~li:last-child::after {
   left: -77.5px;
 }
-.main_menu li:nth-child(4):hover::after {
+.main_menu ul li:nth-child(4):hover::after {
   left: 72.5px;
 }
-.main_menu li a {
+.main_menu ul li a {
   text-decoration: none;
   font-size: 18px;
   transition: color 0.1s;
 }
-.darkmode .header .main_menu li a {
+.darkmode .header .main_menu ul li a {
   color: rgba(255, 255, 255, 0.8);
 }
-.darkmode .header .main_menu li a:hover {
+.darkmode .header .main_menu ul li a:hover {
   color: rgba(255, 255, 255, 1);
   font-weight: 500;
 }
-.darkmode .header .main_menu li.active a {
+.darkmode .header .main_menu ul li.active a {
   color: rgba(255, 255, 255, 1);
   font-weight: 500;
 }
-.lightmode .header .main_menu li a {
+.lightmode .header .main_menu ul li a {
   color: rgba(30, 50, 39, 0.8);
 }
-.lightmode .header .main_menu li a:hover {
+.lightmode .header .main_menu ul li a:hover {
   color: rgba(30, 50, 39, 1);
   font-weight: 500;
 }
-.lightmode .header .main_menu li.active a {
+.lightmode .header .main_menu ul li.active a {
   color: rgba(30, 50, 39, 1);
   font-weight: 500;
 }
 
-@media all and (max-width: 1024px) {
-  .header {
-    display: block;
-  }
-  .logo {
-    position: absolute;
-    justify-content: center;
-    top: 0;
-    left: calc(50% - 82.5px);
-  }
-  .header .main_menu li {
-    display: none;
-  }
-  .menu_btn {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-}
-@media all and (max-width: 400px) {
-  .logo {
-    display: none;
-  }
-}
 
 /* menu button */
 .menu_btn {
@@ -137,7 +119,7 @@
   justify-content: flex-end;
   align-items: center;
 }
-.menu_btn button {
+.menu_btn > button {
   width: 25px;
   height: 25px;
   outline: none;
@@ -163,11 +145,69 @@
   background: #213429;
 }
 .menu_btn_line1 {
-  top: 0;
+  top: 1px;
 }
 .menu_btn_line2 {
-  top: 9px;
+  top: 11px;
 }
 .menu_btn_line3 {
-  top: 18px;
+  top: 22px;
+}
+
+/* darkmode button */
+.menu_btn .darkmode_btn {
+  width: 105px;
+  height: 80px;
+  position: relative;
+}
+.menu_btn .darkmode_btn button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  outline: none;
+  border: none;
+  position: absolute;
+  top: 25px;
+  right: 20px;
+  padding: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+.darkmode .header .menu_btn .darkmode_btn button {
+  background: rgba(0, 0, 0, 0);
+}
+.lightmode .header .menu_btn .darkmode_btn button {
+  background: rgba(0, 0, 0, 1);
+}
+.lightmode .header .menu_btn .darkmode_btn button img {
+  position: absolute;
+  top: 3.5px;
+  left: 3.5px;
+}
+
+/* 반응형 */
+
+@media all and (max-width: 1024px) {
+  .header {
+    display: block;
+  }
+  .logo {
+    position: absolute;
+    justify-content: center;
+    top: 0;
+    left: calc(50% - 82.5px);
+  }
+  .header .main_menu{
+    display: none;
+  }
+  .menu_btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+@media all and (max-width: 400px) {
+  .logo {
+    display: none;
+  }
 }

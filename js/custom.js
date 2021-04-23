@@ -4,24 +4,33 @@ window.addEventListener("load", (e) => {
    * https://modernizr.com/download/?-touchevents-setclasses !*/
   !function(e,n,t){function o(e){var n=u.className,t=Modernizr._config.classPrefix||"";if(p&&(n=n.baseVal),Modernizr._config.enableJSClass){var o=new RegExp("(^|\\s)"+t+"no-js(\\s|$)");n=n.replace(o,"$1"+t+"js$2")}Modernizr._config.enableClasses&&(n+=" "+t+e.join(" "+t),p?u.className.baseVal=n:u.className=n)}function s(e,n){return typeof e===n}function a(){var e,n,t,o,a,i,r;for(var l in c)if(c.hasOwnProperty(l)){if(e=[],n=c[l],n.name&&(e.push(n.name.toLowerCase()),n.options&&n.options.aliases&&n.options.aliases.length))for(t=0;t<n.options.aliases.length;t++)e.push(n.options.aliases[t].toLowerCase());for(o=s(n.fn,"function")?n.fn():n.fn,a=0;a<e.length;a++)i=e[a],r=i.split("."),1===r.length?Modernizr[r[0]]=o:(!Modernizr[r[0]]||Modernizr[r[0]]instanceof Boolean||(Modernizr[r[0]]=new Boolean(Modernizr[r[0]])),Modernizr[r[0]][r[1]]=o),f.push((o?"":"no-")+r.join("-"))}}function i(){return"function"!=typeof n.createElement?n.createElement(arguments[0]):p?n.createElementNS.call(n,"http://www.w3.org/2000/svg",arguments[0]):n.createElement.apply(n,arguments)}function r(){var e=n.body;return e||(e=i(p?"svg":"body"),e.fake=!0),e}function l(e,t,o,s){var a,l,f,c,d="modernizr",p=i("div"),h=r();if(parseInt(o,10))for(;o--;)f=i("div"),f.id=s?s[o]:d+(o+1),p.appendChild(f);return a=i("style"),a.type="text/css",a.id="s"+d,(h.fake?h:p).appendChild(a),h.appendChild(p),a.styleSheet?a.styleSheet.cssText=e:a.appendChild(n.createTextNode(e)),p.id=d,h.fake&&(h.style.background="",h.style.overflow="hidden",c=u.style.overflow,u.style.overflow="hidden",u.appendChild(h)),l=t(p,e),h.fake?(h.parentNode.removeChild(h),u.style.overflow=c,u.offsetHeight):p.parentNode.removeChild(p),!!l}var f=[],c=[],d={_version:"3.6.0",_config:{classPrefix:"",enableClasses:!0,enableJSClass:!0,usePrefixes:!0},_q:[],on:function(e,n){var t=this;setTimeout(function(){n(t[e])},0)},addTest:function(e,n,t){c.push({name:e,fn:n,options:t})},addAsyncTest:function(e){c.push({name:null,fn:e})}},Modernizr=function(){};Modernizr.prototype=d,Modernizr=new Modernizr;var u=n.documentElement,p="svg"===u.nodeName.toLowerCase(),h=d._config.usePrefixes?" -webkit- -moz- -o- -ms- ".split(" "):["",""];d._prefixes=h;var m=d.testStyles=l;Modernizr.addTest("touchevents",function(){var t;if("ontouchstart"in e||e.DocumentTouch&&n instanceof DocumentTouch)t=!0;else{var o=["@media (",h.join("touch-enabled),("),"heartz",")","{#modernizr{top:9px;position:absolute}}"].join("");m(o,function(e){t=9===e.offsetTop})}return t}),a(),o(f),delete d.addTest,delete d.addAsyncTest;for(var v=0;v<Modernizr._q.length;v++)Modernizr._q[v]();e.Modernizr=Modernizr}(window,document);
 
-  // device 모바일(=0), PC(=1) 구별
-  let device = 0;
+  // device 모바일, PC구별
+  let device = "";
   if (Modernizr.touchevents) {
-    device = 0;  // supported
+    device = "mobile";  // supported
   }else{
-    device = 1;   // not-supported
+    device = "pc";   // not-supported
   }
 
-  if (window.devicePixelRatio == 1) device = 1;
+  if (window.devicePixelRatio == 1) device = "pc";
+  // localStorage 생성 [방문횟수, darkmode = 0; lightmode = 1;, mobile = 0; pc = 1;]
+  let localStorage_data = 0;
+  if (Number(localStorage.getItem("portfolio1012")) < 1) {
+    localStorage.setItem("portfolio1012", "111");
+  } else {
+    localStorage_data = localStorage.getItem("portfolio1012");
+    localStorage.setItem("portfolio1012", `${1}${localStorage_data[1]}${localStorage_data[2]}`);
+  }
 
   // 사용자가 직접 Device Mode를 Select한 경우
-  if (localStorage.getItem("userSelectDevice") == "pc") {
-    device = 1;
-  }else if (localStorage.getItem("userSelectDevice") == "mobile") {
-    device = 0;
-  }
+    if (localStorage.getItem("portfolio1012")[2] == "1") {
+      device = "pc";
+    }else if (localStorage.getItem("portfolio1012")[2] == "0") {
+      device = "mobile";
+    }
 
-  if (!device) {
+
+  if (device == "mobile") {
     if (document.body.classList.contains("pc")) {
       document.body.classList.remove("pc");
     }
@@ -34,15 +43,8 @@ window.addEventListener("load", (e) => {
   }
 
   // darkmode 구별
-  let darkmode = false;
 
-  if (localStorage.getItem("darkmode") == true) {
-    darkmode = true;
-  } else if (localStorage.getItem("darkmode") == false) {
-    darkmode = false;
-  }
-
-  if (darkmode == true) {
+  if (localStorage.getItem("portfolio1012")[1] == "0") {
     if (document.body.classList.contains("lightmode")) {
       document.body.classList.remove("lightmode");
     }
