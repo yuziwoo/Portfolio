@@ -64,8 +64,6 @@ window.addEventListener("load", (e) => {
   darkmode.appendChild(darkmode_btn);
   menu_btn_wrap.appendChild(darkmode);
   let darkmode_btn_image = document.createElement("img");
-  let localStorage_value = "";
-  let localStorage_value2 = "";
   if (document.body.classList.contains("darkmode")) {
     darkmode_btn_image.src = "img/darkmode_btn.png";
   } else if (document.body.classList.contains("lightmode")) {
@@ -73,8 +71,8 @@ window.addEventListener("load", (e) => {
   }
 
   darkmode_btn.addEventListener("click", () => {
-      localStorage_value = localStorage.getItem("portfolio1012")[0];
-      localStorage_value2 = localStorage.getItem("portfolio1012")[2];
+      let localStorage_value = localStorage.getItem("portfolio1012")[0];
+      let localStorage_value2 = localStorage.getItem("portfolio1012")[2];
 
     // localStorage 변환
     if (document.body.classList.contains("darkmode")) {
@@ -124,6 +122,58 @@ window.addEventListener("load", (e) => {
   side_nav_overlay.classList.add("side_nav_overlay");
   header.appendChild(side_nav_overlay);
   header.appendChild(side_nav);
+
+  const side_nav_menu_wrap = document.createElement("div");
+  side_nav_menu_wrap.classList.add("side_nav_menu")
+  const side_nav_menu = document.createElement("ul");
+  const side_nav_menu_info = [["About me", "aboutMe.html"], ["Interactive works", "interactiveWork.html"], ["Pages", "page.html"], ["Design tools", "designTool.html"], ["Contact", "contact.html"]];
+  for (let i =0; i < 5; i++){
+    let side_nav_menu_list = document.createElement("li");
+    let side_nav_menu_list_a = document.createElement("a");
+    side_nav_menu_list_a.innerText = side_nav_menu_info[i][0];
+    side_nav_menu_list_a.href = side_nav_menu_info[i][1];
+    side_nav_menu_list.classList.add("side_nav_menu_list")
+    side_nav_menu_list.appendChild(side_nav_menu_list_a);
+    side_nav_menu.appendChild(side_nav_menu_list);
+  }
+  side_nav_menu_wrap.appendChild(side_nav_menu);
+  side_nav.appendChild(side_nav_menu_wrap);
+
+
+  // Device Mode
+  const deviceMode = document.createElement("div");
+  const deviceMode_btn = document.createElement("a");
+  deviceMode.classList.add("deviceMode");
+
+  if (document.body.classList.contains("pc")) {
+    deviceMode_btn.innerText = "Mobile Ver";
+    deviceMode_btn.href = "m_main.html";
+  } else if (document.body.classList.contains("mobile")) {
+    deviceMode_btn.innerText = "PC Ver";
+    deviceMode_btn.href = "m_main.html";
+  }
+
+  deviceMode.appendChild(deviceMode_btn);
+  side_nav_menu_wrap.appendChild(deviceMode);
+
+
+  deviceMode_btn.addEventListener("click", () => {
+      let localStorage_value = localStorage.getItem("portfolio1012")[0];
+      let localStorage_value2 = localStorage.getItem("portfolio1012")[1];
+
+    // localStorage 변환
+    if (document.body.classList.contains("pc")) {
+      document.body.classList.add("mobile");
+      document.body.classList.remove("pc");
+      localStorage.setItem("portfolio1012", `${localStorage_value}${localStorage_value2}0`);
+    } else if (document.body.classList.contains("mobile")) {
+      document.body.classList.add("pc");
+      document.body.classList.remove("mobile");
+      localStorage.setItem("portfolio1012", `${localStorage_value}${localStorage_value2}1`);
+    }
+  }, false); // click 이벤트 종료
+
+
 
   let side_nav_click = (display, opacity) => {
     side_nav.style.display = display;

@@ -94,7 +94,7 @@
   color: rgba(255, 255, 255, 1);
   font-weight: 500;
 }
-.darkmode .header .main_menu ul li.active a {
+.darkmode .header .main_menu ul .active a {
   color: rgba(255, 255, 255, 1);
   font-weight: 500;
 }
@@ -105,7 +105,7 @@
   color: rgba(30, 50, 39, 1);
   font-weight: 500;
 }
-.lightmode .header .main_menu ul li.active a {
+.lightmode .header .main_menu ul .active a {
   color: rgba(30, 50, 39, 1);
   font-weight: 500;
 }
@@ -143,7 +143,7 @@
   background: rgba(255, 255, 255, 1);
 }
 .lightmode .header .menu_btn button .menu_btn_line {
-  background: #213429;
+  background: rgba(33, 52, 41, 1);;
 }
 .menu_btn_line1 {
   top: 1px;
@@ -161,6 +161,7 @@
   width: 105px;
   height: 80px;
   position: relative;
+  user-select: none;
 }
 .menu_btn .darkmode_btn button {
   width: 30px;
@@ -194,7 +195,7 @@
   left: 3.5px;
 }
 
-/* side_nav */
+/* Side Navigation */
 .side_nav {
   width: 500px;
   height: 100vh;
@@ -227,6 +228,110 @@
 .darkmode .header .side_nav_overlay {
   background: rgba(255, 255, 255, 0.1);
 }
+
+/* Side Navigation Menu */
+.side_nav_menu {
+  width: 100%;
+  height: calc(100% - 80px);
+  position: relative;
+  top: 80px;
+}
+.side_nav_menu ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.side_nav_menu ul .side_nav_menu_list {
+  width: 400px;
+  height: 60px;
+  position: relative;
+}
+.side_nav_menu ul .side_nav_menu_list a::after {
+  content: "";
+  background: darkred;
+  width: 0;
+  height: 2px;
+  position: absolute;
+  top: 37px;
+  transition: all 0.7s;
+}
+.side_nav_menu ul .side_nav_menu_list:nth-child(1) a::after{
+  left: 64.75px;
+}
+.side_nav_menu ul .side_nav_menu_list:nth-child(2) a::after{
+  left: 113.61px;
+}
+.side_nav_menu ul .side_nav_menu_list:nth-child(3) a::after{
+  left: 41.64px;
+}
+.side_nav_menu ul .side_nav_menu_list:nth-child(4) a::after{
+  left: 82.8px;
+}
+.side_nav_menu ul .side_nav_menu_list:nth-child(5) a::after{
+  left: 52.4px;
+}
+.side_nav_menu ul .side_nav_menu_list a {
+  text-decoration: none;
+  color: rgba(33, 52, 41, 0.5);
+  font-size: 30px;
+  transition: color 0.5s;
+}
+.side_nav_menu ul .active a {
+  color: rgba(33, 52, 41, 1);
+}
+.side_nav_menu ul .side_nav_menu_list a:hover {
+  color: rgba(33, 52, 41, 1);
+}
+.side_nav_menu ul .side_nav_menu_list:nth-child(1) a:hover::after {
+  width: 129.5px;
+  left: 0;
+}
+.side_nav_menu ul .side_nav_menu_list:nth-child(2) a:hover::after {
+  width: 227.22px;
+  left: 0;
+}
+.side_nav_menu ul .side_nav_menu_list:nth-child(3) a:hover::after {
+  width: 83.28px;
+  left: 0;
+}
+.side_nav_menu ul .side_nav_menu_list:nth-child(4) a:hover::after {
+  width: 165.6px;
+  left: 0;
+}
+.side_nav_menu ul .side_nav_menu_list:nth-child(5) a:hover::after {
+  width: 104.8px;
+  left: 0;
+}
+.darkmode .header .side_nav_menu ul .side_nav_menu_list a {
+  color: rgba(255, 255, 255, 0.6);
+}
+.darkmode .header .side_nav_menu ul .active a {
+  color: rgba(255, 255, 255, 1);
+}
+.darkmode .header .side_nav_menu ul .side_nav_menu_list a:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+
+
+
+/* Side Navigation Device Mode */
+.side_nav_menu .deviceMode {
+  width: 76px;
+  height: 19px;
+  position: absolute;
+  bottom: 80px;
+  left: 380px;
+}
+.side_nav_menu .deviceMode a {
+  color: rgba(32, 52, 41, 1);
+}
+.darkmode .side_nav_menu .deviceMode a {
+  color: rgba(255, 255, 255, 1);
+}
+
+
 
 /* 반응형 */
 
