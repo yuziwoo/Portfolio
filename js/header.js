@@ -15,11 +15,11 @@ window.addEventListener("load", (e) => {
   const path = logo_a.getElementsByTagName("path");
   if (document.body.classList.contains("darkmode")) {
     for (let i = 0; i < 8; i++) {
-      path[i].setAttribute("fill", "white");
+      path[i].setAttribute("fill", "rgba(255, 255, 255, 0.8)");
     }
   } else {
     for (let i = 0; i < 8; i++) {
-      path[i].setAttribute("fill", "#213429");
+      path[i].setAttribute("fill", "rgba(30, 50, 39, 0.8)");
     }
   }
   logo.appendChild(logo_a);
@@ -56,7 +56,7 @@ window.addEventListener("load", (e) => {
     document.styleSheets[3].cssRules[0].style.setProperty("left", "-377.5px");
   }
 
-  // Menu button -darkmode_btn
+  // Menu button darkmode_btn
   const menu_btn_wrap = document.createElement("div");
   const darkmode = document.createElement("div");
   darkmode.classList.add("darkmode_btn")
@@ -90,11 +90,11 @@ window.addEventListener("load", (e) => {
     // header logo 색깔 변환
     if (document.body.classList.contains("darkmode")) {
       for (let i = 0; i < 8; i++) {
-        path[i].setAttribute("fill", "white");
+        path[i].setAttribute("fill", "rgba(255, 255, 255, 0.8)");
       }
     } else {
       for (let i = 0; i < 8; i++) {
-        path[i].setAttribute("fill", "#213429");
+        path[i].setAttribute("fill", "rgba(30, 50, 39, 0.8)");
       }
     }
   }, false); // click 이벤트 종료

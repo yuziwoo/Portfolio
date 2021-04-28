@@ -69,27 +69,7 @@ class Opening {
     this.textDecorationV = 15;
 
     // 클릭을 했는지 알아내기 위한 이벤트
-    this.isClick = 0;
-    document.addEventListener("click", (e) => {
-      this.isClick += 1;
-    })
-
-    // 마우스 hover시 중앙 텍스트의 투명도 조절 이벤트
-    this.isHover = 0.8;
-    document.addEventListener("mousemove", (e) => {
-      if (this.isClick < 1) {
-        if (e.clientX > this.halfW - 125 &&
-            e.clientX < this.halfW + 125 &&
-            e.clientY > this.halfH - 32 &&
-            e.clientY < this.halfH ) {
-            this.isHover = 0.6;
-          }else {
-            this.isHover = 0.8;
-          }
-      }else if (this.isClick > 0) {
-        this.isHover = 0.8;
-      }
-    });
+    this.isClick = -100;
 
   } // constructor() End --
 
@@ -108,6 +88,7 @@ class Opening {
   } // resize() End --
 
   draw(ctx) {
+    this.isClick += 1;
     // 배경 색상 생성
     this.grd = ctx.createLinearGradient(0, 0, this.stageWidth, this.stageHeight);
     this.grd.addColorStop(0,"rgba(255, 255, 255, 1)");
@@ -115,11 +96,11 @@ class Opening {
 
     // 도형의 움직임
     this.dashOffset += 3;
-    if (this.isClick) {
+    if (this.isClick > 0) {
       this.count += 3;
     }
 
-    if (this.count > 80 && this.isClick) {
+    if (this.count > 80 && this.isClick > 0) {
        if (this.change < this.radius - this.changeV){
          this.changeV += 0.3;
          this.change += this.changeV;
@@ -129,6 +110,7 @@ class Opening {
        }
     }
 
+
     // 배경 그리기
     ctx.beginPath();
     ctx.save();
@@ -136,6 +118,7 @@ class Opening {
     ctx.fillStyle = this.grd;
     ctx.fillRect(0,0,this.stageWidth,this.stageHeight);
     ctx.restore();
+
 
     // 원 그리기 2
     ctx.beginPath();
@@ -166,34 +149,9 @@ class Opening {
     ctx.stroke();
     ctx.restore();
 
+
     // 텍스트 생성
-    if (this.count < 300) {
-      ctx.beginPath();
-      ctx.fillStyle = `rgba(8, 8, 15, ${this.isHover})`;
-      ctx.font = "bold 36px Arial";
-      ctx.textAlign = "center";
-      ctx.fillText("Click for Enter", this.halfW, this.halfH + 4);
-
-      if (this.isClick) {
-        if (this.textDecoration < 250) {
-          this.textDecoration += this.textDecorationV;
-          if (this.textDecorationV > 1) {
-            this.textDecorationV -= 0.55;
-          }
-        }
-        ctx.beginPath();
-        ctx.strokeStyle = `rgba(8,8,15,${this.isHover})`;
-        ctx.lineWidth = 3;
-        ctx.lineCap = "round";
-        ctx.moveTo(this.halfW - 125, this.halfH - 8);
-        ctx.lineTo(this.halfW - 125 + this.textDecoration , this.halfH - 8);
-        ctx.stroke();
-      }
-    }
-
-
-    // 텍스트 생성 2
-    if (this.count > 375 && this.isClick) {
+    if (this.count > 375 && this.isClick > 0) {
       if (this.fontColor < 1) {
         this.fontColor += 0.02;
       }
