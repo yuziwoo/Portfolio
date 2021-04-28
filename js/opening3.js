@@ -52,13 +52,16 @@ class Opening {
     // 이미지 만들기
     this.img = new Image();
     this.img.src = "img/opening.jpg";
+    this.grd = 0;
 
     this.gap = Math.max(this.stageWidth, this.stageHeight) / 20;
-    this.width = this.gap *2;
+    this.width = this.gap * 2;
 
     // 도형 설정
     this.count = 0;
     this.opacity = 1;
+
+    this.rotate = 0;
 
   } // constructor() End --
 
@@ -71,15 +74,35 @@ class Opening {
     this.gap = Math.max(this.stageWidth, this.stageHeight) / 20;
     this.width = this.gap *2;
 
-    this.move = 0;
-
   } // resize() End --
 
   draw(ctx) {
     this.count += 1;
 
+    ctx.clearRect(0, 0, this.stageWidth, this.stageHeight);
+
     ctx.beginPath();
     ctx.drawImage(this.img, this.stageWidth - 800, 0);
+
+    this.grd = ctx.createLinearGradient(0, 0, 0, this.stageHeight);
+    this.grd.addColorStop(0,"rgba(95, 194, 166, 1)");
+    this.grd.addColorStop(1,"rgba(220, 236, 165, 1)");
+
+    this.rotate += Math.PI / 180 * 2
+
+    ctx.save();
+    ctx.translate(this.halfW, this.halfH);
+    ctx.rotate(this.rotate);
+
+    ctx.beginPath();
+    ctx.beginPath();
+    ctx.fillStyle = this.grd;
+    ctx.arc(0, -50, 5 , 0 , 2*Math.PI);
+    ctx.fill();
+
+    ctx.restore();
+
+
 
 
      // 종료
