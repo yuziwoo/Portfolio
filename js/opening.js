@@ -115,7 +115,7 @@ class Opening {
       this.scene = 4;
     }
 
-    if (this.scene == 4 && this.count > 180) {
+    if (this.scene == 4 && this.count > 200) {
       if (this.kicking[0] < this.gap && this.kicking[0] > 0) {
         this.kicking[0] += this.kickingV;
       } else if (this.kicking[0] >= this.gap) {
@@ -328,7 +328,7 @@ class Opening {
     ctx.fillRect(this.gap * -14, this.gap * 2.4, this.gap * 28, this.gap * 0.6);
     ctx.restore();
 
-    if (this.count > 220) {
+    if (this.count > 240) {
       if (this.opacity < 1) {
         this.opacity += 0.02;
       }
@@ -338,12 +338,12 @@ class Opening {
       ctx.font = "16px Arial";
       ctx.textAlign = "end";
       ctx.fillStyle = `rgba(30, 39, 39, ${this.opacity})`;
-      ctx.fillText("저의 작품에 오신걸 환영합니다.", 0, 0);
+      ctx.fillText("오늘 하루도 행복하세요.", 0, 0);
       ctx.restore();
     }
 
      // 종료
-    if (this.count > 350) {
+    if (this.count > 370) {
       this.opacity2 -= 0.01;
       document.getElementsByTagName("canvas")[0].style.opacity = this.opacity2;
       if (this.opacity2 < 0) {
