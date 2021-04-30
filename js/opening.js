@@ -1,5 +1,3 @@
-// Airbnb 스타일가이드에 맞춰서 작성하였습니다. canvas에 낯선분들을 위하여 최대한 많은 주석을 남깁니다. 감사합니다.
-
 class App {
   constructor() {
     // canvas 생성
@@ -24,9 +22,9 @@ class App {
     this.stageHeight = document.body.clientHeight;
 
     // canvas 크기 설정
-    this.canvas.width = this.stageWidth * 4;
-    this.canvas.height = this.stageHeight * 4;
-    this.ctx.scale(4, 4);
+    this.canvas.width = this.stageWidth * 2;
+    this.canvas.height = this.stageHeight * 2;
+    this.ctx.scale(2, 2);
 
     // opening 객체 resize 메소드 연동
     this.opening.resize(this.ctx);
@@ -50,26 +48,30 @@ class Opening {
     this.stageHeight = document.body.clientHeight;
     this.halfW = document.body.clientWidth / 2;
     this.halfH = document.body.clientHeight / 2;
-    this.eraser = new Eraser();
+
+    this.gap = Math.max(this.stageWidth, this.stageHeight) / 50;
 
     // 도형 설정
-    this.radius = Math.min(this.stageWidth, this.stageHeight) / 20 * 9;
-    this.arc = this.radius / 2;
-    this.dashOffset = 0;
-
-    // 도형의 변환을 위한 설정
-    this.change = 0;
-    this.changeV = 5;
-
-    // 시간차에 따른 Scene의 변환을 주기 위한 설정
+    this.grd = 0;
     this.count = 0;
-    this.opacity = 100;
-    this.fontColor = 0;
-    this.textDecoration = 0;
-    this.textDecorationV = 15;
+    this.opacity = 0;
 
-    // 클릭을 했는지 알아내기 위한 이벤트
-    this.isClick = -100;
+    // 도형 움직임 설정
+    this.lineWidth = 2;//this.gap * 0.8;
+    this.lineWidthV = this.gap * 0.008;
+
+    this.scene = 1;
+    this.lengths = [];
+    for (let i = 0; i < 13; i++) {
+      this.lengths[i] = 0;
+    }
+    this.speed = this.gap / 10;
+    this.length12V = this.gap * 2;
+    this.rebound = 0;
+    this.reboundV = this.gap;
+    this.kicking = [0.01,0];
+    this.kickingV = this.gap / 5;
+
 
   } // constructor() End --
 
@@ -79,144 +81,268 @@ class Opening {
     this.halfW = document.body.clientWidth / 2;
     this.halfH = document.body.clientHeight / 2;
 
-    if (this.isClick < 1) { // 클릭이 실행된 이후에는 도형의 크기를 고정시켜 오류의 발생을 방지합니다.
-      this.radius = Math.min(this.stageWidth, this.stageHeight) / 20 * 9;
-      this.arc = this.radius / 2;
+    this.gap = Math.max(this.stageWidth, this.stageHeight) / 50;
+
+    if (this.scene >= 4) {
+      this.lengths[12] = this.stageWidth;
     }
 
-    this.eraser.resize();
   } // resize() End --
 
   draw(ctx) {
-    this.isClick += 1;
-    // 배경 색상 생성
-    this.grd = ctx.createLinearGradient(0, 0, this.stageWidth, this.stageHeight);
-    this.grd.addColorStop(0,"rgba(255, 255, 255, 1)");
-    this.grd.addColorStop(1,"rgba(247, 243, 242, 1)");
+    this.count += 1;
 
-    // 도형의 움직임
-    this.dashOffset += 3;
-    if (this.isClick > 0) {
-      this.count += 3;
+    if (this.scene == 2 && this.lineWidth < this.gap * 0.6) {
+      this.lineWidth += this.lineWidthV;
+      this.lineWidthV += this.gap * 0.001;
+    } else if (this.scene == 2 && this.count < 115) {
+      this.scene = 3;
     }
 
-    if (this.count > 80 && this.isClick > 0) {
-       if (this.change < this.radius - this.changeV){
-         this.changeV += 0.3;
-         this.change += this.changeV;
-         this.dashOffset += 1;
-       }else {
-         this.dashOffset -= 1;
-       }
+    if (this.scene == 3 && this.lengths[12] < this.stageWidth && this.count > 115) {
+       this.lengths[12] += this.length12V;
+    } else if (this.lengths[12] >= this.stageWidth
+      && this.rebound < this.gap * 3
+      && this.rebound >= 0) {
+      this.rebound += this.reboundV;
+      this.lengths[12] = this.stageWidth;
+    } else if (this.rebound >= this.gap * 3) {
+      this.reboundV *= -0.125;
+      this.rebound += this.reboundV * 8;
+      this.lengths[12] = this.stageWidth;
+    } else if (this.rebound < 0 && this.count < 180) {
+      this.scene = 4;
     }
 
+    if (this.scene == 4 && this.count > 180) {
+      if (this.kicking[0] < this.gap && this.kicking[0] > 0) {
+        this.kicking[0] += this.kickingV;
+      } else if (this.kicking[0] >= this.gap) {
+        this.kickingV *= -0.5;
+        this.kicking[0] += this.kickingV;
+      }
+      if (this.kicking[1] < this.gap * 2) {
+        this.kicking[1] += this.gap / 5;
+      }
+    }
 
-    // 배경 그리기
-    ctx.beginPath();
+    ctx.clearRect(0, 0, this.stageWidth, this.stageHeight);
+
+    this.grd = ctx.createLinearGradient(0, 0, 0, this.stageHeight);
+    this.grd.addColorStop(0,"rgba(95, 194, 166, 1)");
+    this.grd.addColorStop(1,"rgba(220, 236, 165, 1)");
+
     ctx.save();
-    ctx.filter = `opacity(${this.opacity}%)`;
-    ctx.fillStyle = this.grd;
-    ctx.fillRect(0,0,this.stageWidth,this.stageHeight);
-    ctx.restore();
+    ctx.strokeStyle = "#738078";
+    ctx.lineWidth = this.lineWidth;
+    ctx.miterLimit = 1;
+    // ctx.lineCap = "round";
 
-
-    // 원 그리기 2
+    // J
     ctx.beginPath();
-    ctx.save();
-    ctx.filter = `opacity(${this.opacity}%)`;
-    ctx.fillStyle = this.grd;
-    ctx.lineWidth = 2;
-    ctx.lineCap = "round";
-    ctx.strokeStyle = "rgba(8, 8, 15, 0.8)";
+    ctx.translate(this.halfW - this.gap * 14, this.halfH - this.gap * 2.5);
+    ctx.moveTo(this.gap * 2.5 + this.rebound, this.gap * 0.1);
+    ctx.lineTo(this.gap * 2.5 + this.rebound, this.gap * 3.6);
+    ctx.arcTo(this.gap * 2.5 + this.rebound, this.gap * 4.6, this.gap * 1.5 + this.rebound, this.gap * 4.6, this.gap);
+    ctx.quadraticCurveTo(this.gap * 0.7 + this.rebound, this.gap * 4.7, this.gap * 0.3 + this.rebound, this.gap * 4.2);
+    ctx.stroke();
 
+    if (this.scene == 1) {
+      if (this.lengths[0] < this.gap * 3.5) {
+        this.lengths[0] += this.speed;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.gap * 1, this.gap * 3.6, this.gap * 2, this.gap * -3.5 + this.lengths[0]);
+      }
+      ctx.fillStyle = "white";
+      ctx.fillRect(0, this.gap * 3.5, this.gap * 2.5 + 2 - this.lengths[1], this.gap * 2);
+      if (this.lengths[0] >= this.gap * 3.5 && this.lengths[1] < this.gap * 2.5) {
+        this.lengths[1] += this.speed;
+      }
+    }
 
-    // DashOffset 설정
-    ctx.setLineDash([this.radius*3, this.radius]);
-    ctx.lineDashOffset = this.dashOffset;
+    // I
+    ctx.beginPath();
+    ctx.moveTo(this.gap * 4.4 + this.rebound, this.gap * 0.1);
+    ctx.lineTo(this.gap * 4.4 + this.rebound, this.gap * 4.9);
+    ctx.stroke();
 
-    // 도형 생성
-    ctx.moveTo(this.halfW + this.radius, this.halfH);
-    ctx.arcTo(this.halfW + this.radius, this.halfH + this.radius, this.halfW + this.change, this.halfH + this.radius, this.radius - this.change);
-    ctx.lineTo(this.halfW, this.halfH + this.radius);
-    ctx.arcTo(this.halfW - this.radius, this.halfH + this.radius, this.halfW - this.radius, this.halfH + this.change, this.radius - this.change);
-    ctx.lineTo(this.halfW - this.radius, this.halfH);
-    ctx.arcTo(this.halfW - this.radius, this.halfH - this.radius, this.halfW - this.change, this.halfH - this.radius, this.radius - this.change);
-    ctx.lineTo(this.halfW, this.halfH - this.radius);
-    ctx.arcTo(this.halfW + this.radius, this.halfH - this.radius, this.halfW + this.radius, this.halfH - this.change, this.radius - this.change);
-    ctx.lineTo(this.halfW + this.radius, this.halfH);
+    if (this.scene == 1) {
+      if (this.lengths[2] < this.gap * 5) {
+        this.lengths[2] += this.speed;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.gap * 4.4 - 2, this.gap * 4.9, 4, this.gap * -5 + this.lengths[2]);
+      }
+    }
+
+    // W
+    ctx.beginPath();
+    ctx.moveTo(this.gap * 6 + this.rebound, this.gap * -0.1);
+    ctx.lineTo(this.gap * 7.3 + this.rebound, this.gap * 4.9);
+    ctx.lineWidth = this.lineWidth * 0.85;
+    ctx.lineTo(this.gap * 8.62 + this.rebound, this.gap * 0.1);
+    ctx.lineTo(this.gap * 9.92 + this.rebound + this.kicking[0], this.gap * 4.9);
+    ctx.lineWidth = this.lineWidth;
+    ctx.lineTo(this.gap * 11.14 + this.rebound + this.kicking[0], this.gap * -0.1);
+    ctx.stroke();
+
+    if (this.scene == 1) {
+      if (this.lengths[3] < this.gap * 5) {
+        this.lengths[3] += this.speed;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.gap * 11.14 + 2, 0, this.gap * -5.14 + this.lengths[3], this.gap * 5);
+      }
+    }
+
+    // 1
+    ctx.beginPath();
+    ctx.moveTo(this.gap * 16.1 + this.rebound, this.gap * 1);
+    ctx.lineTo(this.gap * 17.48 + this.rebound, this.gap * 0.1);
+    ctx.lineTo(this.gap * 17.48 + this.rebound, this.gap * 4.9);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.fillStyle = "white";
+    ctx.moveTo(this.gap * 15.5 + this.rebound, 0);
+    ctx.lineTo(this.gap * 17.12 + this.rebound, 0);
+    ctx.lineTo(this.gap * 16.34 + this.rebound, this.gap * 0.52);
+    ctx.lineTo(this.gap * 16.34 + this.rebound, this.gap * 1.24);
+    ctx.lineTo(this.gap * 17.10 + this.rebound, this.gap * 0.78);
+    ctx.lineTo(this.gap * 17.10 + this.rebound, this.gap * 5);
+    ctx.lineTo(this.gap * 15.5 + this.rebound, this.gap * 5);
     ctx.closePath();
     ctx.fill();
-    ctx.stroke();
-    ctx.restore();
 
-
-    // 텍스트 생성
-    if (this.count > 375 && this.isClick > 0) {
-      if (this.fontColor < 1) {
-        this.fontColor += 0.02;
+    if (this.scene == 1) {
+      if (this.lengths[4] < this.gap * 1.18) {
+        this.lengths[4] += this.speed;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.gap * 17.48 - 2, 0, this.gap * -1.18 + this.lengths[4], this.gap * 2);
       }
-      ctx.beginPath();
-      ctx.fillStyle = `rgba(8, 8, 15, ${this.fontColor / 5 * 4 + this.opacity / 100 - 1})`;
-      ctx.font = "bold 36px Arial";
-      ctx.textAlign = "center";
-      ctx.fillText("태어나면서부터", this.halfW, this.halfH - 26);
-      ctx.fillText("현명한 이는 없다.", this.halfW, this.halfH + 26);
-      ctx.fillStyle = `rgba(8, 8, 15, ${this.fontColor / 2 + this.opacity / 200 - 0.5})`;
-      ctx.font = "bold 18px Arial";
-      ctx.textAlign = "center";
-      ctx.fillText("- Miguel de Cervantes", this.halfW, this.halfH + 60);
+      ctx.fillStyle = "white";
+      ctx.fillRect(this.gap * 17.48 - 2, this.gap * 5, 4, this.gap * -5 + this.lengths[5]);
+      if (this.lengths[4] >= this.gap * 1.18 && this.lengths[5] < this.gap * 5) {
+        this.lengths[5] += this.speed;
+      }
     }
 
-     // 텍스트가 생성되는 이벤트가 끝나면 eraser.draw() 이벤트 실행
-    if (this.count > 800 && this.isClick > 0) {
-      this.eraser.draw(ctx);
-      if (this.opacity > 1) {
-        this.opacity -= 1;
-      }
-    };
-  } // draw() End --
-
-} // Opening End --
-
-
-class Eraser {
-  constructor() {
-    // display 설정
-    this.stageWidth = document.body.clientWidth;
-    this.stageHeight = document.body.clientHeight;
-
-    // 지우개 역할
-    this.line1X = 0;
-    this.line1Y = 0;
-    this.lineWidth = 0;
-    this.lineWidthV = 5;
-    this.count = 0;
-  }
-
-  resize() {
-      this.stageWidth = document.body.clientWidth;
-      this.stageHeight = document.body.clientHeight;
-  }
-
-  draw(ctx) {
-    this.lineWidthV += 1;
-    this.lineWidth += this.lineWidthV;
-    this.line1X += this.stageWidth / 10;
-    this.line1Y += this.stageHeight / 10;
-
-    ctx.save();
-    ctx.globalCompositeOperation = "destination-out";
+    // 0
     ctx.beginPath();
-    ctx.lineWidth = this.lineWidth;
-    ctx.lineCap = "round"
-    ctx.strokeStyle = "rgba(255, 255, 255, 1)";
-    ctx.moveTo(this.stageWidth , 0);
-    ctx.lineTo(this.stageWidth - this.line1X, this.line1Y);
+    ctx.moveTo(this.gap * 19.3 + this.rebound, this.gap * 1.2);
+    ctx.lineTo(this.gap * 19.3 + this.rebound, this.gap * 3.6);
+    ctx.arcTo(this.gap * 19.3 + this.rebound, this.gap * 4.6, this.gap * 20.9 + this.rebound, this.gap * 4.6, this.gap * 1);
+    ctx.arcTo(this.gap * 21.46 + this.rebound, this.gap * 4.6, this.gap * 21.46 + this.rebound, this.gap * 3.6, this.gap * 1);
+    ctx.lineTo(this.gap * 21.46 + this.rebound, this.gap * 1.2);
+    ctx.arcTo(this.gap * 21.46 + this.rebound, this.gap * 0.3, this.gap * 20.9 + this.rebound, this.gap * 0.3, this.gap * 1);
+    ctx.arcTo(this.gap * 19.3 + this.rebound, this.gap * 0.3, this.gap * 19.3 + this.rebound, this.gap * 1.2, this.gap * 1);
+    ctx.closePath();
     ctx.stroke();
+
+    if (this.scene == 1) {
+      if (this.lengths[6] < this.gap * 5) {
+        this.lengths[6] += this.speed;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.gap * 19.3 - 2, 0, this.gap * 2.16 + 4, this.gap * 5 - this.lengths[6]);
+      }
+    }
+
+    // 1
+    ctx.beginPath();
+    ctx.moveTo(this.gap * 22.4 + this.rebound, this.gap * 1);
+    ctx.lineTo(this.gap * 23.78 + this.rebound, this.gap * 0.1);
+    ctx.lineTo(this.gap * 23.78 + this.rebound, this.gap * 4.9);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.fillStyle = "white";
+    ctx.moveTo(this.gap * 21.8 + this.rebound, 0);
+    ctx.lineTo(this.gap * 23.42 + this.rebound, 0);
+    ctx.lineTo(this.gap * 22.64 + this.rebound, this.gap * 0.52);
+    ctx.lineTo(this.gap * 22.64 + this.rebound, this.gap * 1.24);
+    ctx.lineTo(this.gap * 23.4 + this.rebound, this.gap * 0.78);
+    ctx.lineTo(this.gap * 23.4 + this.rebound, this.gap * 5);
+    ctx.lineTo(this.gap * 21.8 + this.rebound, this.gap * 5);
+    ctx.closePath();
+    ctx.fill();
+
+    if (this.scene == 1) {
+      if (this.lengths[7] < this.gap * 1.18) {
+        this.lengths[7] += this.speed;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.gap * 23.75 - 2, 0, this.gap * -1.18 + this.lengths[7], this.gap * 2);
+      }
+      ctx.fillStyle = "white";
+      ctx.fillRect(this.gap * 23.78 - 2, this.gap * 5, 4, this.gap * -5 + this.lengths[8]);
+      if (this.lengths[7] >= this.gap * 1.18 && this.lengths[8] < this.gap * 5) {
+        this.lengths[8] += this.speed;
+      }
+    }
+
+    // 2
+    ctx.beginPath();
+    ctx.moveTo(this.gap * 25.5 + this.rebound, this.gap * 1.3);
+    ctx.arcTo(this.gap * 25.5 + this.rebound, this.gap * 0.4, this.gap * 26.06 + this.rebound, this.gap * 0.4, this.gap * 1);
+    ctx.arcTo(this.gap * 27.62 + this.rebound, this.gap * 0.4, this.gap * 27.62 + this.rebound, this.gap * 1.3, this.gap * 1);
+    ctx.quadraticCurveTo(this.gap * 27.62 + this.rebound, this.gap * 1.8, this.gap * 25.5 + this.rebound, this.gap * 4.6);
+    ctx.lineTo(this.gap * 28 + this.rebound, this.gap * 4.6);
+    ctx.stroke();
+
+    if (this.scene == 1) {
+      if (this.lengths[9] < this.gap * 3) {
+        this.lengths[9] += this.speed;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.gap * 27.62 + 2, 0, this.gap * -3 + this.lengths[9], this.gap * 1.7);
+      }
+      ctx.fillStyle = "white";
+      ctx.fillRect(this.gap * 27.62 + 2, this.gap * 4.6 - 2, this.gap * -3, this.gap * -3.4 + this.lengths[10]);
+      if (this.lengths[10] < this.gap * 3.3 && this.lengths[9] >= this.gap * 3) {
+        this.lengths[10] += this.speed;
+      }
+      if (this.lengths[11] < this.gap * 2.5) {
+        this.lengths[11] += this.speed;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.gap * 25.5 - 2, this.gap * 4.6 - 2, this.gap * 2.5 - this.lengths[11], 4);
+      }
+    }
+
+    if ( this.lengths[10] >= this.gap * 3.3
+      && this.lengths[3] >= this.gap * 5
+      && this.count > 74
+      && this.count < 84){
+      this.scene = 2;
+    }
+
+    // _
+    ctx.beginPath();
+    ctx.moveTo(this.gap * 12.52 - this.stageWidth + this.lengths[12] + this.rebound - this.gap * 2.2 + this.kicking[1], this.gap * 4.62);
+    ctx.lineTo(this.gap * 15.42 - this.stageWidth + this.lengths[12] + this.rebound - this.gap * 2.2 + this.kicking[1], this.gap * 4.62);
+    ctx.stroke();
+
     ctx.restore();
 
-    this.count += 1;
-    if (this.count > 80) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.translate(this.halfW, this.halfH);
+    ctx.fillStyle = "white";
+    ctx.fillRect(this.gap * -14, this.gap * -3, this.gap * 28, this.gap * 0.6);
+    ctx.fillRect(this.gap * -14, this.gap * 2.4, this.gap * 28, this.gap * 0.6);
+    ctx.restore();
+
+    if (this.count > 220) {
+      if (this.opacity < 1) {
+        this.opacity += 0.02;
+      }
+      ctx.save();
+      ctx.beginPath();
+      ctx.translate(this.halfW + this.gap * 14 - 40, this.halfH + this.gap * 3.5);
+      ctx.font = "16px Arial";
+      ctx.textAlign = "center";
+      ctx.fillStyle = `rgba(30, 39, 39, ${this.opacity})`;
+      ctx.fillText("반갑습니다.", 0, 0);
+      ctx.restore();
+    }
+
+     // 종료
+    if (this.count > 400) {
       document.getElementsByTagName("canvas")[0].remove();
       document.normalize();
       if (document.body.classList.contains("pc")) {
@@ -224,10 +350,10 @@ class Eraser {
       }else if (document.body.classList.contains("mobile")) {
         window.location.href = "m_main.html"
       }
+    };
+  } // draw() End --
 
-    }
-  }
-}
+} // Opening End --
 
 window.addEventListener("load", (e) => {
   let canvas = new App();
