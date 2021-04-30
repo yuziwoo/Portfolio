@@ -57,8 +57,18 @@ class Opening {
     this.opacity = 1;
 
     // 도형 움직임 설정
-    this.lineWidth = 1;//this.gap * 0.8;
-    this.lineWidthV = 0.05;
+    this.lineWidth = 2;//this.gap * 0.8;
+    this.lineWidthV = this.gap * 0.008;
+
+    this.scene = 1;
+    this.lengths = [];
+    for (let i = 0; i < 13; i++) {
+      this.lengths[i] = 0;
+    }
+    this.speed = this.gap / 10;
+    this.length12V = this.gap * 2;
+    this.rebound = 0;
+    this.reboundV = this.gap;
 
 
   } // constructor() End --
@@ -79,15 +89,22 @@ class Opening {
   draw(ctx) {
     this.count += 1;
 
-    if (this.lineWidth > this.gap * 0.8){
-      this.lineWidthV *= -1;
-      this.lineWidth += this.lineWidthV
-    }else if(this.lineWidth < 1){
-      this.lineWidthV *= -1;
-      this.lineWidth += this.lineWidthV
+    if (this.scene == 2 && this.lineWidth < this.gap * 0.7) {
+      this.lineWidth += this.lineWidthV;
+      this.lineWidthV += this.gap * 0.001;
+    } else if (this.scene == 2 && this.count < 115) {
+      this.scene = 3;
     }
-    this.lineWidth += this.lineWidthV
 
+    if (this.scene == 3 && this.lengths[12] < this.stageWidth && this.count > 115) {
+       this.lengths[12] += this.length12V;
+    } else if (this.lengths[12] >= this.stageWidth
+      && this.rebound < this.gap * 3
+      && this.rebound >= 0) {
+      this.rebound += this.reboundV;
+    } else if (this.rebound >= this.gap * 3) {
+      this.reboundV *= -1;
+    }
 
     ctx.clearRect(0, 0, this.stageWidth, this.stageHeight);
 
@@ -110,11 +127,32 @@ class Opening {
     ctx.quadraticCurveTo(this.gap * 0.7, this.gap * 4.7, this.gap * 0.3, this.gap * 4.2);
     ctx.stroke();
 
+    if (this.scene == 1) {
+      if (this.lengths[0] < this.gap * 3.5) {
+        this.lengths[0] += this.speed;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.gap * 1, this.gap * 3.6, this.gap * 2, this.gap * -3.5 + this.lengths[0]);
+      }
+      ctx.fillStyle = "white";
+      ctx.fillRect(0, this.gap * 3.5, this.gap * 2.5 + 2 - this.lengths[1], this.gap * 2);
+      if (this.lengths[0] >= this.gap * 3.5 && this.lengths[1] < this.gap * 2.5) {
+        this.lengths[1] += this.speed;
+      }
+    }
+
     // I
     ctx.beginPath();
     ctx.moveTo(this.gap * 4.4, this.gap * 0.1);
     ctx.lineTo(this.gap * 4.4, this.gap * 4.9);
     ctx.stroke();
+
+    if (this.scene == 1) {
+      if (this.lengths[2] < this.gap * 5) {
+        this.lengths[2] += this.speed;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.gap * 4.4 - 2, this.gap * 4.9, 4, this.gap * -5 + this.lengths[2]);
+      }
+    }
 
     // W
     ctx.beginPath();
@@ -127,13 +165,20 @@ class Opening {
     ctx.lineTo(this.gap * 11.14, this.gap * -0.1);
     ctx.stroke();
 
+    if (this.scene == 1) {
+      if (this.lengths[3] < this.gap * 5) {
+        this.lengths[3] += this.speed;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.gap * 11.14 + 2, 0, this.gap * -5.14 + this.lengths[3], this.gap * 5);
+      }
+    }
+
     // 1
     ctx.beginPath();
-    ctx.moveTo(this.gap * 16.3, this.gap * 0.9);
+    ctx.moveTo(this.gap * 16.1, this.gap * 1);
     ctx.lineTo(this.gap * 17.48, this.gap * 0.1);
     ctx.lineTo(this.gap * 17.48, this.gap * 4.9);
     ctx.stroke();
-
 
     ctx.beginPath();
     ctx.fillStyle = "white";
@@ -147,6 +192,18 @@ class Opening {
     ctx.closePath();
     ctx.fill();
 
+    if (this.scene == 1) {
+      if (this.lengths[4] < this.gap * 1.18) {
+        this.lengths[4] += this.speed;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.gap * 17.48 - 2, 0, this.gap * -1.18 + this.lengths[4], this.gap * 2);
+      }
+      ctx.fillStyle = "white";
+      ctx.fillRect(this.gap * 17.48 - 2, this.gap * 5, 4, this.gap * -5 + this.lengths[5]);
+      if (this.lengths[4] >= this.gap * 1.18 && this.lengths[5] < this.gap * 5) {
+        this.lengths[5] += this.speed;
+      }
+    }
 
     // 0
     ctx.beginPath();
@@ -160,9 +217,17 @@ class Opening {
     ctx.closePath();
     ctx.stroke();
 
+    if (this.scene == 1) {
+      if (this.lengths[6] < this.gap * 5) {
+        this.lengths[6] += this.speed;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.gap * 19.3 - 2, 0, this.gap * 2.16 + 4, this.gap * 5 - this.lengths[6]);
+      }
+    }
+
     // 1
     ctx.beginPath();
-    ctx.moveTo(this.gap * 22.6, this.gap * 0.9);
+    ctx.moveTo(this.gap * 22.4, this.gap * 1);
     ctx.lineTo(this.gap * 23.78, this.gap * 0.1);
     ctx.lineTo(this.gap * 23.78, this.gap * 4.9);
     ctx.stroke();
@@ -179,6 +244,19 @@ class Opening {
     ctx.closePath();
     ctx.fill();
 
+    if (this.scene == 1) {
+      if (this.lengths[7] < this.gap * 1.18) {
+        this.lengths[7] += this.speed;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.gap * 23.75 - 2, 0, this.gap * -1.18 + this.lengths[7], this.gap * 2);
+      }
+      ctx.fillStyle = "white";
+      ctx.fillRect(this.gap * 23.78 - 2, this.gap * 5, 4, this.gap * -5 + this.lengths[8]);
+      if (this.lengths[7] >= this.gap * 1.18 && this.lengths[8] < this.gap * 5) {
+        this.lengths[8] += this.speed;
+      }
+    }
+
     // 2
     ctx.beginPath();
     ctx.moveTo(this.gap * 25.5, this.gap * 1.3);
@@ -188,22 +266,39 @@ class Opening {
     ctx.lineTo(this.gap * 28, this.gap * 4.6);
     ctx.stroke();
 
+    if (this.scene == 1) {
+      if (this.lengths[9] < this.gap * 3) {
+        this.lengths[9] += this.speed;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.gap * 27.62 + 2, 0, this.gap * -3 + this.lengths[9], this.gap * 1.7);
+      }
+      ctx.fillStyle = "white";
+      ctx.fillRect(this.gap * 27.62 + 2, this.gap * 4.6 - 2, this.gap * -3, this.gap * -3.4 + this.lengths[10]);
+      if (this.lengths[10] < this.gap * 3.3 && this.lengths[9] >= this.gap * 3) {
+        this.lengths[10] += this.speed;
+      }
+      if (this.lengths[11] < this.gap * 2.5) {
+        this.lengths[11] += this.speed;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.gap * 25.5 - 2, this.gap * 4.6 - 2, this.gap * 2.5 - this.lengths[11], 4);
+      }
+    }
+
+    if ( this.lengths[10] >= this.gap * 3.3
+      && this.lengths[3] >= this.gap * 5
+      && this.count > 74
+      && this.count < 84){
+      this.scene = 2;
+    }
+
     // _
     ctx.beginPath();
-    ctx.moveTo(this.gap * 12.52, this.gap * 4.62);
-    ctx.lineTo(this.gap * 15.42, this.gap * 4.62);
+    ctx.moveTo(this.gap * 12.52 - this.stageWidth + this.lengths[12], this.gap * 4.62);
+    ctx.lineTo(this.gap * 15.42 - this.stageWidth + this.lengths[12], this.gap * 4.62);
     ctx.stroke();
 
+
     ctx.restore();
-
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.globalAlpha = 0.2;
-    ctx.translate(this.halfW, this.halfH);
-    ctx.drawImage(this.img, this.gap*-14, this.gap*-2.5, this.gap*28, this.gap*5);
-    ctx.restore();
-
 
     ctx.save();
     ctx.beginPath();
@@ -212,6 +307,10 @@ class Opening {
     ctx.fillRect(this.gap * -14, this.gap * -3, this.gap * 28, this.gap * 0.6);
     ctx.fillRect(this.gap * -14, this.gap * 2.4, this.gap * 28, this.gap * 0.6);
     ctx.restore();
+
+
+
+
 
 
 
