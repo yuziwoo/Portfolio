@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 v.0.3 main작업 시작
+=======
+v.0.2 main작업 시작
+develop 시작
+>>>>>>> develop
