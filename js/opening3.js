@@ -69,6 +69,8 @@ class Opening {
     this.length12V = this.gap * 2;
     this.rebound = 0;
     this.reboundV = this.gap;
+    this.kicking = [0,0];
+    this.kickingV = this.gap / 5;
 
 
   } // constructor() End --
@@ -102,8 +104,16 @@ class Opening {
       && this.rebound < this.gap * 3
       && this.rebound >= 0) {
       this.rebound += this.reboundV;
+      this.lengths[12] = this.stageWidth;
     } else if (this.rebound >= this.gap * 3) {
-      this.reboundV *= -1;
+      this.reboundV *= -0.125;
+      this.rebound += this.reboundV * 8;
+    } else if (this.rebound < 0 && this.count < 162) {
+      this.scene = 4;
+    }
+
+    if (this.scene == 4) {
+
     }
 
     ctx.clearRect(0, 0, this.stageWidth, this.stageHeight);
@@ -113,7 +123,7 @@ class Opening {
     this.grd.addColorStop(1,"rgba(220, 236, 165, 1)");
 
     ctx.save();
-    ctx.strokeStyle = "dodgerblue";
+    ctx.strokeStyle = "#4D8063";
     ctx.lineWidth = this.lineWidth;
     ctx.miterLimit = 1;
     // ctx.lineCap = "round";
@@ -121,10 +131,10 @@ class Opening {
     // J
     ctx.beginPath();
     ctx.translate(this.halfW - this.gap * 14, this.halfH - this.gap * 2.5);
-    ctx.moveTo(this.gap * 2.5, this.gap * 0.1);
-    ctx.lineTo(this.gap * 2.5, this.gap * 3.6);
-    ctx.arcTo(this.gap * 2.5, this.gap * 4.6, this.gap * 1.5, this.gap * 4.6, this.gap);
-    ctx.quadraticCurveTo(this.gap * 0.7, this.gap * 4.7, this.gap * 0.3, this.gap * 4.2);
+    ctx.moveTo(this.gap * 2.5 + this.rebound, this.gap * 0.1);
+    ctx.lineTo(this.gap * 2.5 + this.rebound, this.gap * 3.6);
+    ctx.arcTo(this.gap * 2.5 + this.rebound, this.gap * 4.6, this.gap * 1.5 + this.rebound, this.gap * 4.6, this.gap);
+    ctx.quadraticCurveTo(this.gap * 0.7 + this.rebound, this.gap * 4.7, this.gap * 0.3 + this.rebound, this.gap * 4.2);
     ctx.stroke();
 
     if (this.scene == 1) {
@@ -142,8 +152,8 @@ class Opening {
 
     // I
     ctx.beginPath();
-    ctx.moveTo(this.gap * 4.4, this.gap * 0.1);
-    ctx.lineTo(this.gap * 4.4, this.gap * 4.9);
+    ctx.moveTo(this.gap * 4.4 + this.rebound, this.gap * 0.1);
+    ctx.lineTo(this.gap * 4.4 + this.rebound, this.gap * 4.9);
     ctx.stroke();
 
     if (this.scene == 1) {
@@ -156,13 +166,13 @@ class Opening {
 
     // W
     ctx.beginPath();
-    ctx.moveTo(this.gap * 6, this.gap * -0.1);
-    ctx.lineTo(this.gap * 7.3, this.gap * 4.9);
+    ctx.moveTo(this.gap * 6 + this.rebound, this.gap * -0.1);
+    ctx.lineTo(this.gap * 7.3 + this.rebound, this.gap * 4.9);
     ctx.lineWidth = this.lineWidth * 0.85;
-    ctx.lineTo(this.gap * 8.62, this.gap * 0.1);
-    ctx.lineTo(this.gap * 9.92, this.gap * 4.9);
+    ctx.lineTo(this.gap * 8.62 + this.rebound, this.gap * 0.1);
+    ctx.lineTo(this.gap * 9.92 + this.rebound, this.gap * 4.9);
     ctx.lineWidth = this.lineWidth;
-    ctx.lineTo(this.gap * 11.14, this.gap * -0.1);
+    ctx.lineTo(this.gap * 11.14 + this.rebound, this.gap * -0.1);
     ctx.stroke();
 
     if (this.scene == 1) {
@@ -175,20 +185,20 @@ class Opening {
 
     // 1
     ctx.beginPath();
-    ctx.moveTo(this.gap * 16.1, this.gap * 1);
-    ctx.lineTo(this.gap * 17.48, this.gap * 0.1);
-    ctx.lineTo(this.gap * 17.48, this.gap * 4.9);
+    ctx.moveTo(this.gap * 16.1 + this.rebound, this.gap * 1);
+    ctx.lineTo(this.gap * 17.48 + this.rebound, this.gap * 0.1);
+    ctx.lineTo(this.gap * 17.48 + this.rebound, this.gap * 4.9);
     ctx.stroke();
 
     ctx.beginPath();
     ctx.fillStyle = "white";
-    ctx.moveTo(this.gap * 15.5, 0);
-    ctx.lineTo(this.gap * 17.12, 0);
-    ctx.lineTo(this.gap * 16.34, this.gap * 0.52);
-    ctx.lineTo(this.gap * 16.34, this.gap * 1.24);
-    ctx.lineTo(this.gap * 17.10, this.gap * 0.78);
-    ctx.lineTo(this.gap * 17.10, this.gap * 5);
-    ctx.lineTo(this.gap * 15.5, this.gap * 5);
+    ctx.moveTo(this.gap * 15.5 + this.rebound, 0);
+    ctx.lineTo(this.gap * 17.12 + this.rebound, 0);
+    ctx.lineTo(this.gap * 16.34 + this.rebound, this.gap * 0.52);
+    ctx.lineTo(this.gap * 16.34 + this.rebound, this.gap * 1.24);
+    ctx.lineTo(this.gap * 17.10 + this.rebound, this.gap * 0.78);
+    ctx.lineTo(this.gap * 17.10 + this.rebound, this.gap * 5);
+    ctx.lineTo(this.gap * 15.5 + this.rebound, this.gap * 5);
     ctx.closePath();
     ctx.fill();
 
@@ -207,13 +217,13 @@ class Opening {
 
     // 0
     ctx.beginPath();
-    ctx.moveTo(this.gap * 19.3, this.gap * 1.2);
-    ctx.lineTo(this.gap * 19.3, this.gap * 3.6);
-    ctx.arcTo(this.gap * 19.3, this.gap * 4.6, this.gap * 20.9, this.gap * 4.6, this.gap * 1);
-    ctx.arcTo(this.gap * 21.46, this.gap * 4.6, this.gap * 21.46, this.gap * 3.6, this.gap * 1);
-    ctx.lineTo(this.gap * 21.46, this.gap * 1.2);
-    ctx.arcTo(this.gap * 21.46, this.gap * 0.3, this.gap * 20.9, this.gap * 0.3, this.gap * 1);
-    ctx.arcTo(this.gap * 19.3, this.gap * 0.3, this.gap * 19.3, this.gap * 1.2, this.gap * 1);
+    ctx.moveTo(this.gap * 19.3 + this.rebound, this.gap * 1.2);
+    ctx.lineTo(this.gap * 19.3 + this.rebound, this.gap * 3.6);
+    ctx.arcTo(this.gap * 19.3 + this.rebound, this.gap * 4.6, this.gap * 20.9 + this.rebound, this.gap * 4.6, this.gap * 1);
+    ctx.arcTo(this.gap * 21.46 + this.rebound, this.gap * 4.6, this.gap * 21.46 + this.rebound, this.gap * 3.6, this.gap * 1);
+    ctx.lineTo(this.gap * 21.46 + this.rebound, this.gap * 1.2);
+    ctx.arcTo(this.gap * 21.46 + this.rebound, this.gap * 0.3, this.gap * 20.9 + this.rebound, this.gap * 0.3, this.gap * 1);
+    ctx.arcTo(this.gap * 19.3 + this.rebound, this.gap * 0.3, this.gap * 19.3 + this.rebound, this.gap * 1.2, this.gap * 1);
     ctx.closePath();
     ctx.stroke();
 
@@ -227,20 +237,20 @@ class Opening {
 
     // 1
     ctx.beginPath();
-    ctx.moveTo(this.gap * 22.4, this.gap * 1);
-    ctx.lineTo(this.gap * 23.78, this.gap * 0.1);
-    ctx.lineTo(this.gap * 23.78, this.gap * 4.9);
+    ctx.moveTo(this.gap * 22.4 + this.rebound, this.gap * 1);
+    ctx.lineTo(this.gap * 23.78 + this.rebound, this.gap * 0.1);
+    ctx.lineTo(this.gap * 23.78 + this.rebound, this.gap * 4.9);
     ctx.stroke();
 
     ctx.beginPath();
     ctx.fillStyle = "white";
-    ctx.moveTo(this.gap * 21.8, 0);
-    ctx.lineTo(this.gap * 23.42, 0);
-    ctx.lineTo(this.gap * 22.64, this.gap * 0.52);
-    ctx.lineTo(this.gap * 22.64, this.gap * 1.24);
-    ctx.lineTo(this.gap * 23.4, this.gap * 0.78);
-    ctx.lineTo(this.gap * 23.4, this.gap * 5);
-    ctx.lineTo(this.gap * 21.8, this.gap * 5);
+    ctx.moveTo(this.gap * 21.8 + this.rebound, 0);
+    ctx.lineTo(this.gap * 23.42 + this.rebound, 0);
+    ctx.lineTo(this.gap * 22.64 + this.rebound, this.gap * 0.52);
+    ctx.lineTo(this.gap * 22.64 + this.rebound, this.gap * 1.24);
+    ctx.lineTo(this.gap * 23.4 + this.rebound, this.gap * 0.78);
+    ctx.lineTo(this.gap * 23.4 + this.rebound, this.gap * 5);
+    ctx.lineTo(this.gap * 21.8 + this.rebound, this.gap * 5);
     ctx.closePath();
     ctx.fill();
 
@@ -259,11 +269,11 @@ class Opening {
 
     // 2
     ctx.beginPath();
-    ctx.moveTo(this.gap * 25.5, this.gap * 1.3);
-    ctx.arcTo(this.gap * 25.5, this.gap * 0.4, this.gap * 26.06, this.gap * 0.4, this.gap * 1);
-    ctx.arcTo(this.gap * 27.62, this.gap * 0.4, this.gap * 27.62, this.gap * 1.3, this.gap * 1);
-    ctx.quadraticCurveTo(this.gap * 27.62, this.gap * 1.8, this.gap * 25.5, this.gap * 4.6);
-    ctx.lineTo(this.gap * 28, this.gap * 4.6);
+    ctx.moveTo(this.gap * 25.5 + this.rebound, this.gap * 1.3);
+    ctx.arcTo(this.gap * 25.5 + this.rebound, this.gap * 0.4, this.gap * 26.06 + this.rebound, this.gap * 0.4, this.gap * 1);
+    ctx.arcTo(this.gap * 27.62 + this.rebound, this.gap * 0.4, this.gap * 27.62 + this.rebound, this.gap * 1.3, this.gap * 1);
+    ctx.quadraticCurveTo(this.gap * 27.62 + this.rebound, this.gap * 1.8, this.gap * 25.5 + this.rebound, this.gap * 4.6);
+    ctx.lineTo(this.gap * 28 + this.rebound, this.gap * 4.6);
     ctx.stroke();
 
     if (this.scene == 1) {
@@ -293,8 +303,8 @@ class Opening {
 
     // _
     ctx.beginPath();
-    ctx.moveTo(this.gap * 12.52 - this.stageWidth + this.lengths[12], this.gap * 4.62);
-    ctx.lineTo(this.gap * 15.42 - this.stageWidth + this.lengths[12], this.gap * 4.62);
+    ctx.moveTo(this.gap * 12.52 - this.stageWidth + this.lengths[12] + this.rebound, this.gap * 4.62);
+    ctx.lineTo(this.gap * 15.42 - this.stageWidth + this.lengths[12] + this.rebound, this.gap * 4.62);
     ctx.stroke();
 
 
