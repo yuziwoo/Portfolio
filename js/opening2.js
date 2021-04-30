@@ -14,6 +14,8 @@ class App {
 
     // animate method 실행
     requestAnimationFrame(this.animate.bind(this));
+
+    document.body.style.cursor = "pointer";
   }
 
   resize() {
@@ -54,6 +56,7 @@ class Opening {
     // 도형 설정
     this.grd = 0;
     this.count = 0;
+    this.count2 = 0;
     this.opacity = 0;
 
     // 도형 움직임 설정
@@ -71,6 +74,13 @@ class Opening {
     this.reboundV = this.gap;
     this.kicking = [0.01,0];
     this.kickingV = this.gap / 5;
+
+    this.isClick = 0;
+    document.addEventListener("click", () => {
+      if (this.scene >= 4) {
+        this.isClick += 1;
+      }
+    })
 
 
   } // constructor() End --
@@ -140,7 +150,7 @@ class Opening {
 
     // J
     ctx.beginPath();
-    ctx.translate(this.halfW - this.gap * 14, this.halfH - this.gap * 2.5);
+    ctx.translate(this.halfW - this.gap * 14, this.halfH - this.gap * 2.5 + this.count2);
     ctx.moveTo(this.gap * 2.5 + this.rebound, this.gap * 0.1);
     ctx.lineTo(this.gap * 2.5 + this.rebound, this.gap * 3.6);
     ctx.arcTo(this.gap * 2.5 + this.rebound, this.gap * 4.6, this.gap * 1.5 + this.rebound, this.gap * 4.6, this.gap);
@@ -321,7 +331,7 @@ class Opening {
 
     ctx.save();
     ctx.beginPath();
-    ctx.translate(this.halfW, this.halfH);
+    ctx.translate(this.halfW, this.halfH + this.count2);
     ctx.fillStyle = "white";
     ctx.fillRect(this.gap * -14, this.gap * -3, this.gap * 28, this.gap * 0.6);
     ctx.fillRect(this.gap * -14, this.gap * 2.4, this.gap * 28, this.gap * 0.6);
@@ -333,23 +343,26 @@ class Opening {
       }
       ctx.save();
       ctx.beginPath();
-      ctx.translate(this.halfW + this.gap * 14, this.halfH + this.gap * 3.5);
+      ctx.translate(this.halfW + this.gap * 14 - 130, this.halfH + this.gap * 3.5 + this.count2);
       ctx.font = "16px Arial";
-      ctx.textAlign = "end";
+      ctx.textAlign = "center";
       ctx.fillStyle = `rgba(30, 39, 39, ${this.opacity})`;
-      ctx.fillText("저의 작품에 오신걸 환영합니다.", 0, 0);
+      ctx.fillText("마우스를 클릭하면 홈페이지로 이동합니다.", 0, 0);
       ctx.restore();
     }
 
      // 종료
-    if (this.count > 400) {
-      document.getElementsByTagName("canvas")[0].remove();
-      document.normalize();
-      if (document.body.classList.contains("pc")) {
-        window.location.href = "main.html";
-      }else if (document.body.classList.contains("mobile")) {
-        window.location.href = "m_main.html"
-      }
+    if (this.count > 220 && this.isClick > 0) {
+       this.count2 += this.stageHeight / 15;
+       if (this.count2 > this.stageHeight) {
+         document.getElementsByTagName("canvas")[0].remove();
+         document.normalize();
+         if (document.body.classList.contains("pc")) {
+           window.location.href = "main.html";
+         }else if (document.body.classList.contains("mobile")) {
+           window.location.href = "m_main.html"
+         }
+       }
     };
   } // draw() End --
 

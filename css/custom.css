@@ -1,2 +1,11 @@
-.darkmode{background:rgba(8,8,15,1);}
-.lightmode{background:rgba(255,255,255,1);}
+ /* darkmode */
+.darkmode {
+  background: linear-gradient(to bottom right, rgba(30,31,33,1) 0%, rgba(30, 35, 33, 1) 100%);
+  background-attachment : fixed;
+}
+
+ /* lightmode */
+.lightmode {
+  background: linear-gradient(to bottom right, rgba(255,255,255,1) 0%, rgba(247, 243, 242, 1) 100%);
+  background-attachment : fixed;
+}

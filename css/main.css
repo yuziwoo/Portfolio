@@ -1,2 +1,58 @@
-.darkmode{background:rgba(8,8,15,1);}
-.lightmode{background:rgba(255,255,255,1);}
+.comment {
+  position: absolute;
+  top: 95px;
+  left: 60px;
+  width: 140px;
+  height: 25px;
+  font-weight: bold;
+  border-radius: 5px;
+  text-align: center;
+  transition: all 1s;
+  animation: comment 1s 2s linear;
+}
+.comment::after {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  top: -6px;
+  left: 10px;
+  border-top: 10px solid none;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+.lightmode .comment::after {
+  border-bottom: 6px solid rgba(101, 184, 115, 0.4);
+}
+.darkmode .comment::after {
+  border-bottom: 6px solid rgba(101, 184, 115, 0.4);;
+}
+.comment a {
+  text-decoration: none;
+  transition: color 0.5s;
+}
+.lightmode .comment {
+  background: rgba(101, 184, 115, 0.4);
+}
+.darkmode .comment {
+  background: rgba(101, 184, 115, 0.4);
+}
+.lightmode .comment a {
+  color: rgba(0, 0, 0, 0.6);
+}
+.lightmode .comment a:hover {
+  color: rgba(48, 56, 49, 1);
+}
+.darkmode .comment a {
+  color: rgba(255, 255, 255, 0.6);
+}
+.darkmode .comment a:hover {
+  color: rgba(255, 255, 255, 1);
+}
+@keyframes comment {
+  from { transform: rotate(0deg);}
+  25% { transform: rotate(5deg);}
+  50% { transform: rotate(-5deg);}
+  75% { transform: rotate(5deg);}
+  to { transform: rotate(0deg);}
+}
