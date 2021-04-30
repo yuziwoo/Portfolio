@@ -55,6 +55,7 @@ class Opening {
     this.grd = 0;
     this.count = 0;
     this.opacity = 0;
+    this.opacity2 = 1;
 
     // 도형 움직임 설정
     this.lineWidth = 2;//this.gap * 0.8;
@@ -342,13 +343,17 @@ class Opening {
     }
 
      // 종료
-    if (this.count > 400) {
-      document.getElementsByTagName("canvas")[0].remove();
-      document.normalize();
-      if (document.body.classList.contains("pc")) {
-        window.location.href = "main.html";
-      }else if (document.body.classList.contains("mobile")) {
-        window.location.href = "m_main.html"
+    if (this.count > 350) {
+      this.opacity2 -= 0.01;
+      document.getElementsByTagName("canvas")[0].style.opacity = this.opacity2;
+      if (this.opacity2 < 0) {
+        document.getElementsByTagName("canvas")[0].remove();
+        document.normalize();
+        if (document.body.classList.contains("pc")) {
+          window.location.href = "main.html";
+        }else if (document.body.classList.contains("mobile")) {
+          window.location.href = "m_main.html"
+        }
       }
     };
   } // draw() End --
