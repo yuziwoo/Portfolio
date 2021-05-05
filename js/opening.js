@@ -338,7 +338,7 @@ class Opening {
       ctx.font = "16px Arial";
       ctx.textAlign = "end";
       ctx.fillStyle = `rgba(30, 39, 39, ${this.opacity})`;
-      ctx.fillText("오늘 하루도 행복하세요.", 0, 0);
+      ctx.fillText("안녕하세요.", 0, 0);
       ctx.restore();
     }
 
