@@ -338,7 +338,7 @@ class Opening {
       ctx.font = "16px Arial";
       ctx.textAlign = "end";
       ctx.fillStyle = `rgba(30, 39, 39, ${this.opacity})`;
-      ctx.fillText("안녕하세요.", 0, 0);
+      ctx.fillText("유지우의 포트폴리오에 오신것을 진심으로 환영합니다.", 0, 0);
       ctx.restore();
     }
 
