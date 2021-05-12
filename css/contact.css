@@ -1,0 +1,51 @@
+/* 스크롤바 숨기기 */
+body::-webkit-scrollbar{display:none;}
+body{
+  -ms-overflow-style:none;
+}
+/* section1 */
+.section1 {
+  position: relative;
+  top: 80px;
+  width: 100vw;
+  height: calc(100vh - 100px);
+}
+.image_wrap {
+  position: relative;
+  left: 40px;
+  top: 40px;
+  width: 30vw;
+  height: calc(100% - 60px);
+  overflow: hidden;
+  border: 3px solid green;
+}
+.image_wrap figure {
+  margin: 0;
+  width: 30vw;
+  height: 30vw;
+  border-radius: 5px;
+  overflow: hidden;
+  display: flex;
+}
+.image_wrap figure img {
+  margin: 0;
+  width: 30vw;
+  height: 30vw;
+}
+.image_info_wrap {
+  position: relative;
+  width: 30vw;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+.image_info_wrap ul {
+  display: flex;
+  padding: 0;
+  width: 150vw;
+  list-style: none;
+}
+.image_info_wrap ul li {
+  width: 30vw;
+  text-align: center;
+}
