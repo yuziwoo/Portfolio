@@ -1,5 +1,5 @@
 window.addEventListener("load", (e) => {
-  if (!localStorage.getItem("portfolio1012")[2]) {
+  if (document.body.classList.contains("mobile")) {
     window.location.href = "m_main.html";
   }
 
