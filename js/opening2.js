@@ -124,7 +124,7 @@ class Opening {
       this.scene = 4;
     }
 
-    if (this.scene == 4 && this.count > 180) {
+    if (this.scene == 4 && this.count > 200) {
       if (this.kicking[0] < this.gap && this.kicking[0] > 0) {
         this.kicking[0] += this.kickingV;
       } else if (this.kicking[0] >= this.gap) {
@@ -337,7 +337,7 @@ class Opening {
     ctx.fillRect(this.gap * -14, this.gap * 2.4, this.gap * 28, this.gap * 0.6);
     ctx.restore();
 
-    if (this.count > 220) {
+    if (this.count > 240) {
       if (this.opacity < 1) {
         this.opacity += 0.02;
       }
@@ -352,7 +352,7 @@ class Opening {
     }
 
      // 종료
-    if (this.count > 220 && this.isClick > 0) {
+    if (this.count > 240 && this.isClick > 0) {
        this.count2 += this.stageHeight / 15;
        if (this.count2 > this.stageHeight) {
          document.getElementsByTagName("canvas")[0].remove();

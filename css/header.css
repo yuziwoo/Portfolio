@@ -12,7 +12,7 @@
   justify-content: space-between;
   font-family: 'Roboto', sans-serif;
   z-index: 10;
-  transition: all 1s;
+  transition: background-color 1s;
 }
 .darkmode .header {
   background-color: rgba(41, 42, 45, 1);
@@ -358,6 +358,13 @@
 }
 @media all and (max-width: 400px) {
   .logo {
-    display: none;
+    position: absolute;
+    left: 0;
+  }
+}
+@media all and (max-width: 300px) {
+  .logo {
+    position: absolute;
+    top: -80px;
   }
 }

@@ -55,6 +55,7 @@ class Opening {
     this.grd = 0;
     this.count = 0;
     this.opacity = 0;
+    this.opacity2 = 1;
 
     // 도형 움직임 설정
     this.lineWidth = 2;//this.gap * 0.8;
@@ -114,7 +115,7 @@ class Opening {
       this.scene = 4;
     }
 
-    if (this.scene == 4 && this.count > 180) {
+    if (this.scene == 4 && this.count > 200) {
       if (this.kicking[0] < this.gap && this.kicking[0] > 0) {
         this.kicking[0] += this.kickingV;
       } else if (this.kicking[0] >= this.gap) {
@@ -327,7 +328,7 @@ class Opening {
     ctx.fillRect(this.gap * -14, this.gap * 2.4, this.gap * 28, this.gap * 0.6);
     ctx.restore();
 
-    if (this.count > 220) {
+    if (this.count > 240) {
       if (this.opacity < 1) {
         this.opacity += 0.02;
       }
@@ -337,18 +338,22 @@ class Opening {
       ctx.font = "16px Arial";
       ctx.textAlign = "end";
       ctx.fillStyle = `rgba(30, 39, 39, ${this.opacity})`;
-      ctx.fillText("저의 작품에 오신걸 환영합니다.", 0, 0);
+      ctx.fillText("제일 바쁜 사람이 제일 많은 시간을 가진다. - 비네 -", 0, 0);
       ctx.restore();
     }
 
      // 종료
-    if (this.count > 400) {
-      document.getElementsByTagName("canvas")[0].remove();
-      document.normalize();
-      if (document.body.classList.contains("pc")) {
-        window.location.href = "main.html";
-      }else if (document.body.classList.contains("mobile")) {
-        window.location.href = "m_main.html"
+    if (this.count > 370) {
+      this.opacity2 -= 0.01;
+      document.getElementsByTagName("canvas")[0].style.opacity = this.opacity2;
+      if (this.opacity2 < 0) {
+        document.getElementsByTagName("canvas")[0].remove();
+        document.normalize();
+        if (document.body.classList.contains("pc")) {
+          window.location.href = "main.html";
+        }else if (document.body.classList.contains("mobile")) {
+          window.location.href = "m_main.html"
+        }
       }
     };
   } // draw() End --
