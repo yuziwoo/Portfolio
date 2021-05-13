@@ -43,23 +43,34 @@ window.addEventListener("load", (e) => {
   nav.appendChild(main_menu);
   header.appendChild(nav);
 
+const activeNum = document.getElementsByTagName("script")[2].getAttribute("activeNum");
+if (activeNum < 4) {
+  document.getElementsByClassName("main_menu_list")[activeNum].classList.add("active");
 
-  if (document.getElementsByClassName("main_menu_list")[0].classList.contains("active")){
-    document.styleSheets[3].cssRules[0].style.setProperty("left", "-377.5px");
-  } else if (document.getElementsByClassName("main_menu_list")[1].classList.contains("active")){
-    document.styleSheets[3].cssRules[0].style.setProperty("left", "-227.5px");
-  } else if (document.getElementsByClassName("main_menu_list")[2].classList.contains("active")){
-    document.styleSheets[3].cssRules[0].style.setProperty("left", "-77.5px");
-  } else if (document.getElementsByClassName("main_menu_list")[3].classList.contains("active")){
-    document.styleSheets[3].cssRules[0].style.setProperty("left", "72.5px");
-  } else {
-    document.styleSheets[3].cssRules[0].style.setProperty("left", "-377.5px");
-  }
+ if (document.getElementsByClassName("main_menu_list")[0].classList.contains("active")){
+   document.styleSheets[3].cssRules[0].style.setProperty("left", "-377.5px");
+ } else if (document.getElementsByClassName("main_menu_list")[1].classList.contains("active")){
+   document.styleSheets[3].cssRules[0].style.setProperty("left", "-227.5px");
+ } else if (document.getElementsByClassName("main_menu_list")[2].classList.contains("active")){
+   document.styleSheets[3].cssRules[0].style.setProperty("left", "-77.5px");
+ } else if (document.getElementsByClassName("main_menu_list")[3].classList.contains("active")){
+   document.styleSheets[3].cssRules[0].style.setProperty("left", "72.5px");
+ } else {
+   document.styleSheets[3].cssRules[0].style.setProperty("left", "-377.5px");
+ }
+} else if (activeNum >= 4) {
+  document.styleSheets[3].cssRules[0].style.setProperty("left", "-377.5px");
+}
+
+
+
+
+
 
   // Menu button darkmode_btn
   const menu_btn_wrap = document.createElement("div");
   const darkmode = document.createElement("div");
-  darkmode.classList.add("darkmode_btn")
+  darkmode.classList.add("darkmode_btn");
   const darkmode_btn = document.createElement("button");
   darkmode.appendChild(darkmode_btn);
   menu_btn_wrap.appendChild(darkmode);
