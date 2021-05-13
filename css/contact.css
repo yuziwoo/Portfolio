@@ -18,6 +18,7 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 .wrap a img {
   border-radius: 5px;
@@ -29,9 +30,9 @@ body{
 }
 @keyframes kakao {
   0% {transform: rotate(0deg);}
-  25% {transform: rotate(-5deg);}
-  50% {transform: rotate(5deg);}
-  75% {transform: rotate(-5deg);}
+  25% {transform: rotate(-2.5deg);}
+  50% {transform: rotate(2.5deg);}
+  75% {transform: rotate(-2.5deg);}
   100% {transform: rotate(0deg);}
 }
 .wrap h1 {
