@@ -338,7 +338,7 @@ class Opening {
       ctx.font = "16px Arial";
       ctx.textAlign = "end";
       ctx.fillStyle = `rgba(30, 39, 39, ${this.opacity})`;
-      ctx.fillText("제일 바쁜 사람이 제일 많은 시간을 가진다. - 비네 -", 0, 0);
+      ctx.fillText("제일 바쁜 사람이 제일 많은 시간을 가진다 - 비네 -", 0, 0);
       ctx.restore();
     }
 
