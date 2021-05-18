@@ -1,5 +1,12 @@
+/* 스크롤바 숨기기 */
+body::-webkit-scrollbar{display:none;}
+body{
+  -ms-overflow-style:none;
+}
+
 .IDpicture {
-  width: 232px;
-  height: 288px;
+  width: 290px;
+  height: 360px;
   margin-top: 100px;
+  margin-left: 100px;
 }
