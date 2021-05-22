@@ -19,6 +19,7 @@ body{
 /* CSS */
 .aboutMe {
   width: 90vw;
+  height: calc(300vh - 360px);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -26,27 +27,59 @@ body{
   left: 5vw;
 }
 .introduce {
-  height: calc(90vh - 100px);
+  height: calc(100vh - 120px);
+  min-height: 600px;
   display: grid;
   grid-template-areas:
   "box1 box1"
   "box2 box3";
-  border-left: 2px solid rgba(0, 0, 0, 0.5);
-  border-top: 2px solid rgba(0, 0, 0, 0.5);
-  border-right: 2px solid rgba(0, 0, 0, 0.5);
+  grid-template-rows: 60px;
   border-bottom: 2px solid rgba(0, 0, 0, 0.5);
-  border-radius: 15px;
 }
 .introduce .name {
   grid-area: box1;
 }
 .introduce .IDpicture_wrap {
+  align-self: center;
   grid-area: box2;
 }
 .introduce .text {
+  height: 360px;
+  align-self: center;
   grid-area: box3;
+  font-size: 18px;
+}
+.introduce .text td {
+  height: 45px;
+}
+.introduce .text .key {
+  width: 100px;
+  text-align: justify;
+}
+.introduce .text .value {
+  text-align: center;
+}
+.introduce .text table tbody tr:last-child td {
+  height: 120px;
+  text-align: left;
 }
 .IDpicture {
   width: 290px;
   height: 360px;
+}
+.works {
+  height: calc(100vh - 120px);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+}
+.skills {
+  height: calc(100vh - 120px);
+}
+
+/* character */
+canvas {
+  position: fixed;
+  top: 100px;
+  right: 90px;
+  width: 270px;
+  height: 295px;
 }

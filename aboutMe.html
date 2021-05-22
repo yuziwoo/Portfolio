@@ -6,6 +6,7 @@
 
     <!-- 반응형 viewport -->
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+
     <!-- CSS-->
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="css/aboutMe.css">
@@ -21,14 +22,18 @@
     <script type="text/javascript" src="js/aboutMe.js">/**/</script>
     <script type="text/javascript" src="js/header.js" activeNum="0">/* activeNum Attr에 강조할 메뉴의 index번호를 입력하세요. index = 2 */</script>
 
-
+    <!-- fontawesome -->
+    <link rel="stylesheet"
+    href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+    integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp"
+    crossorigin="anonymous">
 
  </head>
  <body class="">
    <section class="aboutMe">
      <article class="introduce">
        <div class="name">
-         <h1>저를 소개합니다.</h1>
+         <h1><i class="fas fa-check"></i> 저를 소개합니다.</h1>
        </div>
        <figure class="IDpicture_wrap">
          <img src="img/aboutmeID2.jpg" alt="" class="IDpicture">
@@ -36,40 +41,43 @@
          <span class="line line2"></span>
        </figure>
 
-       <table class="text">
-         <tbody>
-           <tr>
-             <td class="key"><strong>이름</strong></td>
-             <td class="value">유지우</td>
-           </tr>
-           <tr>
-             <td class="key"><strong>생년월일</strong></td>
-             <td class="value">1995.10.12</td>
-           </tr>
-           <tr>
-             <td class="key"><strong>사는 곳</strong></td>
-             <td class="value">경기도 군포시 산본 / 금정</td>
-           </tr>
-           <tr>
-             <td class="key"><strong>학력</strong></td>
-             <td class="value">전문대졸</td>
-           </tr>
-           <tr>
-             <td class="key"><strong>병역 여부</strong></td>
-             <td class="value">군필</td>
-           </tr>
-           <tr>
-             <td class="key"><strong>소개</strong></td>
-             <td class="value">HTML, CSS, JavaScript를 주로 사용합니다. 앞으로 React, kotlin, swift 크로스브라우징, 반응형 웹에 더 가까워질.
-            <br> 자기발전을 좋아하고, 변화를 두려워하지 않는 밝고, 예의바른 청년입니다. 연락주세요!</td>
-           </tr>
-         </tbody>
-       </table>
+       <div class="text">
+         <table>
+           <tbody>
+             <tr>
+               <td class="key"><strong>이름</strong></td>
+               <td class="value">유지우</td>
+             </tr>
+             <tr>
+               <td class="key"><strong>생년월일</strong></td>
+               <td class="value">1995.10.12</td>
+             </tr>
+             <tr>
+               <td class="key"><strong>사는 곳</strong></td>
+               <td class="value">경기도 군포시 산본 / 금정</td>
+             </tr>
+             <tr>
+               <td class="key"><strong>학력</strong></td>
+               <td class="value">전문대졸</td>
+             </tr>
+             <tr>
+               <td class="key"><strong>병역 여부</strong></td>
+               <td class="value">군필</td>
+             </tr>
+             <tr>
+               <td class="key"><strong>소개</strong></td>
+               <td class="value">HTML, CSS, JavaScript를 주로 사용합니다. 앞으로 React, kotlin, swift 크로스브라우징, 반응형 웹에 더 가까워질.
+              <br> 자기발전을 좋아하고, 변화를 두려워하지 않는 밝고, 예의바른 청년입니다. 연락주세요!</td>
+             </tr>
+           </tbody>
+         </table>
+       </div>
+
      </article>
 
      <article class="works">
        <div class="name">
-         <h1>개인 작업</h1>
+         <h1><i class="fas fa-check"></i> 개인 작업</h1>
        </div>
        <table class="text">
          <tbody>
@@ -91,7 +99,7 @@
 
      <article class="skills">
        <div class="name">
-         <h1>Skill Set</h1>
+         <h1><i class="fas fa-check"></i> Skill Set</h1>
        </div>
 
        <table class="text">
@@ -146,16 +154,6 @@
        </table>
      </article>
    </section>
-
-   <aside class="aboutMe_side">
-     <span class="line"></span>
-     <div class="nav nav1">
-       <h3>소개</h3>
-     </div>
-     <div class="nav nav2">
-       <h3>스킬</h3>
-     </div>
-   </aside>
 
  </body>
 </html>
