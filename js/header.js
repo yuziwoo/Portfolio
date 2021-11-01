@@ -2,7 +2,7 @@
 
 window.addEventListener("load", (e) => {
   const header = document.createElement("header");
-  header.classList.add("header")
+  header.classList.add("header");
   document.body.appendChild(header);
 
   // Logo
